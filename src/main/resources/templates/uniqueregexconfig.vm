@@ -1,0 +1,57 @@
+## Created by Andrey Markelov 28-10-2012.
+## Copyright Mail.Ru Group 2012. All rights reserved.
+<html>
+  <head>
+    <title>$action.getText("uniqueregex.admin.title")</title>
+    <meta name="decorator" content="admin"/>
+    $webResourceManager.requireResource("jira.webresources:global-static")
+    $webResourceManager.requireResource("jira.webresources:jira-global")
+    $webResourceManager.requireResource("com.atlassian.auiplugin:ajs")
+    $webResourceManager.requireResource("jira.webresources:autocomplete")
+    $webResourceManager.requireResource("ru.mail.jira.plugins.uniqueregexfield:juniqueregexfield")
+  </head>
+  <body class="aui">
+    #if($action.hasAdminPermission())
+      <input type="hidden" name="atl_token" id="atl_token" value="$action.getXsrfToken()"/>
+      <table class="jiraform maxWidth">
+        <tr>
+          <td class="jiraformheader">
+            <h3 class="formtitle">$action.getText("uniqueregex.customfields")</h3>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <table class="grid maxWidth">
+              <thead>
+                <tr>
+                  <th width="12%">$action.getText("uniqueregex.customfieldid")</th>
+                  <th width="12%">$action.getText("uniqueregex.customfieldname")</th>
+                  <th width="12%">$action.getText("uniqueregex.regex")</th>
+                  <th width="40%">$action.getText("uniqueregex.jql")</th>
+                  <th width="12%">$action.getText("uniqueregex.targetfield")</th>
+                  <th width="12%">$action.getText("uniqueregex.action")</th>
+                </tr>
+              </thead>
+              <tbody>
+              #foreach($data in $action.getDatas())
+                <tr>
+                  <td width="12%">$data.getCfKey()</td>
+                  <td width="12%">$data.getCfName()</td>
+                  <td width="12%">#if($data.getRegex())$data.getRegex()#end</td>
+                  <td width="40%">#if($data.getJql())$data.getJql()#end</td>
+                  <td width="12%">$data.getTargetCfName()</td>
+                  <td width="12%">
+                    <a href="#" onclick="configureCf(event, '$baseUrl', '$data.getCfKey()');">$action.getText("uniqueregex.action.configure")</a>
+                  </td>
+                </tr>
+              #end
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </table>
+    #else
+      <div class="errorArea">$action.getText("uniqueregex.admin.link.error")</div>
+    #end
+  </body>
+</html>

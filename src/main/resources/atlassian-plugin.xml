@@ -1,0 +1,61 @@
+<atlassian-plugin key="${project.groupId}.${project.artifactId}" name="${project.name}" plugins-version="2">
+    <plugin-info>
+        <description>${project.description}</description>
+        <version>${project.version}</version>
+        <vendor name="${project.organization.name}" url="${project.organization.url}" />
+        <param name="plugin-logo">/media/mcal.png</param>
+        <param name="plugin-icon">/media/mcal.png</param>
+        <param name="vendor-icon">/media/icon.png</param>
+        <param name="vendor-logo">/media/logo.png</param>
+    </plugin-info>
+
+    <resource type="i18n" name="i18n" location="i18n.uniqueregex"/>
+
+    <customfield-type key="unique-regex-cf" name="Unique regex custom field" class="ru.mail.jira.plugins.UniqueRegexCF">
+        <description>Unique regex custom field.</description>
+        <resource type="velocity" name="view" location="templates/view-uniqueregex.vm"/>
+        <resource type="velocity" name="column-view" location="templates/column-view-uniqueregex.vm"/>
+        <resource type="velocity" name="xml" location="templates/xml-uniqueregex.vm"/>
+        <resource type="velocity" name="edit" location="templates/edit-uniqueregex.vm"/>
+    </customfield-type>
+
+    <web-item key="unique_regex_configuration" name="Unique regex fields configuration" section="system.admin/globalsettings" weight="95">
+        <label key="uniqueregex.admin.title"/>
+        <condition class="com.atlassian.jira.plugin.webfragment.conditions.JiraGlobalPermissionCondition">
+            <param name="permission">admin</param>
+        </condition>
+        <link linkId="unique_regex_configuration">/secure/UniqueRegexConfig!default.jspa</link>
+    </web-item>
+
+    <webwork1 key="unique_regex_action" name="Unique regex fields configure action" class="java.lang.Object">
+        <actions>
+            <action name="ru.mail.jira.plugins.UniqueRegexConfig" alias="UniqueRegexConfig">
+                <view name="input">/templates/uniqueregexconfig.vm</view>
+                <view name="success">/templates/uniqueregexconfig.vm</view>
+            </action>
+        </actions>
+    </webwork1>
+
+    <web-resource key="juniqueregexfield" name="Unique Regex CFs Resources">
+        <transformation extension="js">
+            <transformer key="jsI18n"/>
+        </transformation>
+        <resource type="download" name="uniqueregex.js" location="media/uniqueregex.js"/>
+        <resource type="download" name="uniqueregex.css" location="media/uniqueregex.css"/>
+    </web-resource>
+
+    <!-- Rest resources -->
+    <rest key="mailrucal-resources" path="/uniqueregexfield" version="1.0">
+        <description>Provides the REST resource for the "uniqueregexfield" plugin.</description>
+    </rest>
+    <!-- End rest -->
+
+    <!-- Components -->
+    <component key="unique-regex-manager" name="Manager of unique regex fields" class="ru.mail.jira.plugins.UniqueRegexMgrImpl"/>
+    <component-import key="pluginSettingsFactory">
+        <interface>com.atlassian.sal.api.pluginsettings.PluginSettingsFactory</interface>
+    </component-import>
+    <component-import key="applicationProperties">
+        <interface>com.atlassian.sal.api.ApplicationProperties</interface>
+    </component-import>
+</atlassian-plugin>
