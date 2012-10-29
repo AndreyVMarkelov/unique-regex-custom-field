@@ -32,6 +32,11 @@ public class CFData
     private String regex;
 
     /**
+     * Regex error.
+     */
+    private String regexError;
+
+    /**
      * Custom field ID.
      */
     private String targetCf;
@@ -41,10 +46,12 @@ public class CFData
      */
     public CFData(
         String regex,
+        String regexError,
         String jql,
         String targetCf)
     {
         this.regex = regex;
+        this.regexError = regexError;
         this.jql = jql;
         this.targetCf = targetCf;
         
@@ -68,6 +75,11 @@ public class CFData
     public String getRegex()
     {
         return regex;
+    }
+
+    public String getRegexError()
+    {
+        return regexError;
     }
 
     public String getTargetCf()
@@ -124,6 +136,7 @@ public class CFData
     public String toString()
     {
         return "CFData[cfKey=" + cfKey + ", cfName=" + cfName + ", jql=" + jql
-            + ", regex=" + regex + ", targetCf=" + targetCf + "]";
+            + ", regex=" + regex + ", targetCf=" + targetCf + ", regexError=" +
+            regexError + "]";
     }
 }

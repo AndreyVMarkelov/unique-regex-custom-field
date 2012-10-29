@@ -9,6 +9,10 @@
         <input type="text" id="regexclause" name="regexclause" #if($cfData.getRegex())value="$cfData.getRegex()"#end/>
     </div>
     <div class="field-group">
+        <label for="regexerror">$i18n.getText("uniqueregex.regexerror")</label>
+        <input type="text" id="regexerror" name="regexerror" #if($cfData.getRegexError())value="$cfData.getRegexError()"#end/>
+    </div>
+    <div class="field-group">
         <label for="jqlclause">$i18n.getText("uniqueregex.jql")</label>
         <textarea rows="5" cols="30" id="jqlclause" name="jqlclause">#if($cfData.getJql())$cfData.getJql()#end</textarea>
     </div>

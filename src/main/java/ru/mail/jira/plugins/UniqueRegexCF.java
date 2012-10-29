@@ -99,9 +99,18 @@ public class UniqueRegexCF
                 Matcher m = pattern.matcher(cfVal);
                 if (!m.matches())
                 {
-                    errorCollectionToAddTo.addError(
-                        config.getCustomField().getId(),
-                        getI18nBean().getText("uniqueregex.matcherror", cfVal, cfData.getRegex()));
+                    if (cfData.getRegexError() != null && cfData.getRegexError().length() > 0)
+                    {
+                        errorCollectionToAddTo.addError(
+                            config.getCustomField().getId(),
+                            cfData.getRegexError());
+                    }
+                    else
+                    {
+                        errorCollectionToAddTo.addError(
+                            config.getCustomField().getId(),
+                            getI18nBean().getText("uniqueregex.matcherror", cfVal, cfData.getRegex()));
+                    }
                     return;
                 }
             }

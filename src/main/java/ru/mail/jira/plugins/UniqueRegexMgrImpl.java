@@ -38,6 +38,7 @@ public class UniqueRegexMgrImpl
     {
         return new CFData(
             getStringProperty(cfKey + ".regex"),
+            getStringProperty(cfKey + ".regexerror"),
             getStringProperty(cfKey + ".jql"),
             getStringProperty(cfKey + ".target"));
     }
@@ -57,6 +58,12 @@ public class UniqueRegexMgrImpl
     public void setCfRegex(String cfKey, String regex)
     {
         setStringProperty(cfKey + ".regex", regex);
+    }
+
+    @Override
+    public void setCfRegexError(String cfKey, String regexError)
+    {
+        setStringProperty(cfKey + ".regexerror", regexError);
     }
 
     @Override

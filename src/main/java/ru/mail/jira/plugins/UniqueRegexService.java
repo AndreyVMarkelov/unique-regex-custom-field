@@ -105,6 +105,7 @@ public class UniqueRegexService
 
         String cfKey = request.getParameter("cfKey");
         String regexclause = request.getParameter("regexclause");
+        String regexerror = request.getParameter("regexerror");
         String jqlclause = request.getParameter("jqlclause");
         String targetcf = request.getParameter("targetcf");
 
@@ -127,6 +128,7 @@ public class UniqueRegexService
             if (parseResult.isValid())
             {
                 urMgr.setCfRegex(cfKey, regexclause);
+                urMgr.setCfRegexError(cfKey, regexerror);
                 urMgr.setCfJql(cfKey, jqlclause);
                 urMgr.setCfTarget(cfKey, storeCf);
             }
@@ -153,6 +155,7 @@ public class UniqueRegexService
         else
         {
             urMgr.setCfRegex(cfKey, regexclause);
+            urMgr.setCfRegexError(cfKey, regexerror);
             urMgr.setCfJql(cfKey, "");
             urMgr.setCfTarget(cfKey, storeCf);
         }

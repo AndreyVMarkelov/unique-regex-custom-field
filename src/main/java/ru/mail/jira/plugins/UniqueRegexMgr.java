@@ -27,6 +27,11 @@ public interface UniqueRegexMgr
     void setCfRegex(String cfKey, String regex);
 
     /**
+     * Set custom field regex error.
+     */
+    void setCfRegexError(String cfKey, String regexError);
+
+    /**
      * Set target compare field.
      */
     void setCfTarget(String cfKey, String target);
