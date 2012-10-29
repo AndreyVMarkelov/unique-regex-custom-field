@@ -3,8 +3,8 @@
         <description>${project.description}</description>
         <version>${project.version}</version>
         <vendor name="${project.organization.name}" url="${project.organization.url}" />
-        <param name="plugin-logo">/media/mcal.png</param>
-        <param name="plugin-icon">/media/mcal.png</param>
+        <param name="plugin-logo">/media/michen.png</param>
+        <param name="plugin-icon">/media/michen.png</param>
         <param name="vendor-icon">/media/icon.png</param>
         <param name="vendor-logo">/media/logo.png</param>
     </plugin-info>
@@ -18,6 +18,15 @@
         <resource type="velocity" name="xml" location="templates/xml-uniqueregex.vm"/>
         <resource type="velocity" name="edit" location="templates/edit-uniqueregex.vm"/>
     </customfield-type>
+
+    <customfield-searcher key="mailru-select-searcher" name="Unique regex custom field searcher"
+                          i18n-name-key="uniqueregex.admin.seacrher" class="ru.mail.jira.plugins.UrSearcher">
+        <description>Allow searching for unique regex custom field.</description>
+        <resource type="velocity" name="label" location="templates/label-uniqueregex.vm"/>
+        <resource type="velocity" name="search" location="templates/search-uniqueregex.vm"/>
+        <resource type="velocity" name="view" location="templates/view-search-uniqueregex.vm"/>
+        <valid-customfield-type package="${project.groupId}.${project.artifactId}" key="unique-regex-cf"/>
+    </customfield-searcher>
 
     <web-item key="unique_regex_configuration" name="Unique regex fields configuration" section="system.admin/globalsettings" weight="95">
         <label key="uniqueregex.admin.title"/>
