@@ -7,14 +7,14 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>ru.mail.jira.plugins</groupId>
     <artifactId>uniqueregexfield</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
 
     <organization>
         <name>Andrey Markelov | Mail.Ru Group</name>
-        <url>http://www.mail.ru/</url>
+        <url>http://corp.mail.ru/en</url>
     </organization>
 
-    <name>uniqueregexfield</name>
+    <name>Unique Regex Custom Field</name>
     <description>This plugin for Atlassian JIRA defines new Custom Field that check uniqueness and matching regular expression.</description>
     <packaging>atlassian-plugin</packaging>
 
@@ -83,9 +83,9 @@
         <jira.version>4.3.4</jira.version>
         <jira.data.version>4.3</jira.data.version>
         <amps.version>3.8</amps.version>
-        <!-- <jira.version>5.1.6</jira.version>
+        <!--<jira.version>5.1.6</jira.version>
         <jira.data.version>5.1</jira.data.version>
-        <amps.version>3.11</amps.version> -->
+        <amps.version>3.11</amps.version>-->
     </properties>
 
 </project>

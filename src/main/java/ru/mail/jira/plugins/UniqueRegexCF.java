@@ -7,6 +7,7 @@ package ru.mail.jira.plugins;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import com.atlassian.crowd.embedded.api.User;
@@ -24,6 +25,7 @@ import com.atlassian.jira.issue.fields.config.FieldConfig;
 import com.atlassian.jira.issue.search.SearchException;
 import com.atlassian.jira.issue.search.SearchResults;
 import com.atlassian.jira.util.ErrorCollection;
+import com.atlassian.jira.util.JiraWebUtils;
 import com.atlassian.jira.web.bean.PagerFilter;
 
 /**
@@ -40,6 +42,11 @@ public class UniqueRegexCF
     private static Log log = LogFactory.getLog(UniqueRegexCF.class);
 
     /**
+     * Custom field manager.
+     */
+    private final CustomFieldManager cfMgr;
+
+    /**
      * Search service.
      */
     private final SearchService searchService;
@@ -48,11 +55,6 @@ public class UniqueRegexCF
      * Unique regex fields manager.
      */
     private final UniqueRegexMgr urMgr;
-
-    /**
-     * Custom field manager.
-     */
-    private final CustomFieldManager cfMgr;
 
     /**
      * Constructor.
@@ -68,6 +70,34 @@ public class UniqueRegexCF
         this.urMgr = urMgr;
         this.searchService = searchService;
         this.cfMgr = cfMgr;
+    }
+
+    /**
+     * Get issue ID from HTTP request.
+     */
+    private Long getIssueId(HttpServletRequest req)
+    {
+        String[] issueIdStr = req.getParameterValues("id");
+        if (issueIdStr == null)
+        {
+            issueIdStr = req.getParameterValues("issueId");
+        }
+
+        if (issueIdStr == null || issueIdStr.length == 0)
+        {
+            return -1L;
+        }
+        else
+        {
+            try
+            {
+                return Long.valueOf(issueIdStr[0]);
+            }
+            catch (Exception ex)
+            {
+                return -1L;
+            }
+        }
     }
 
     /**
@@ -115,6 +145,7 @@ public class UniqueRegexCF
                 }
             }
 
+            HttpServletRequest request = JiraWebUtils.getHttpRequest();
             if (cfData.getJql() != null && cfData.getJql().length() > 0)
             {
                 User user = ComponentManager.getInstance().getJiraAuthenticationContext().getLoggedInUser();
@@ -134,7 +165,18 @@ public class UniqueRegexCF
                             for (Issue i : issues)
                             {
                                 Object tVal = i.getCustomFieldValue(tCf);
-                                if (tVal != null && tVal.toString().equals(cfVal))
+
+                                boolean isSameIssue = false;
+                                Long currIssueId = getIssueId(request);
+                                if (currIssueId >= 0)
+                                {
+                                    if (i.getId().equals(currIssueId))
+                                    {
+                                        isSameIssue = true;
+                                    }
+                                }
+
+                                if (tVal != null && tVal.toString().equals(cfVal) && !isSameIssue)
                                 {
                                     errorCollectionToAddTo.addError(
                                         config.getCustomField().getId(),
