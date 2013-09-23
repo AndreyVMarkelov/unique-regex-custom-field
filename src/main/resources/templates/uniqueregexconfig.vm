@@ -43,7 +43,7 @@
                   <td width="40%">#if($data.getJql())$data.getJql()#end</td>
                   <td width="12%">$data.getTargetCfName()</td>
                   <td width="12%">
-                    <a href="#" onclick="configureCf(event, '$baseUrl', '$data.getCfKey()');">$action.getText("uniqueregex.action.configure")</a>
+                    <a href="UniqueRegexConfig!configure.jspa?customFieldId=$data.getCfKey()">$action.getText("uniqueregex.action.configure")</a>
                   </td>
                 </tr>
               #end

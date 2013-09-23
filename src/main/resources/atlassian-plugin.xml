@@ -41,6 +41,8 @@
             <action name="ru.mail.jira.plugins.UniqueRegexConfig" alias="UniqueRegexConfig">
                 <view name="input">/templates/uniqueregexconfig.vm</view>
                 <view name="success">/templates/uniqueregexconfig.vm</view>
+                <view name="permissionviolation">/secure/views/permissionviolation.jsp</view>
+                <view name="configure">/templates/uniqueregexconfigfield.vm</view>
             </action>
         </actions>
     </webwork1>

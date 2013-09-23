@@ -1,0 +1,45 @@
+<html>
+    <head>
+        <title>$action.getText("ru.mail.todolist.admin.link.field")</title>
+        <meta name="decorator" content="admin"/>
+        $webResourceManager.requireResource("jira.webresources:global-static")
+        $webResourceManager.requireResource("jira.webresources:jira-global")
+        $webResourceManager.requireResource("com.atlassian.auiplugin:ajs")
+        $webResourceManager.requireResource("jira.webresources:autocomplete")
+        $webResourceManager.requireResource("ru.mail.jira.plugins.uniqueregexfield:juniqueregexfield")
+    </head>
+    <body class="aui">
+        <div id="errorpart" name="errorpart"></div>
+        <form class="aui" onsubmit="if (this.submitted) return false; this.submitted = true; return true"
+                          name="jiraform" method="post" action="UniqueRegexConfig.jspa">
+            <input type="hidden" name="atl_token" value="$atl_token"/>
+            <input type="hidden" name="cfKey" value="$cfKey"/>
+            <div class="field-group">
+                <label for="regexclause">$i18n.getText("uniqueregex.regex")</label>
+                <input type="text" id="regexclause" name="regexclause" #if($cfData.getRegex())value="$cfData.getRegex()"#end/>
+            </div>
+            <div class="field-group">
+                <label for="regexerror">$i18n.getText("uniqueregex.regexerror")</label>
+                <input type="text" id="regexerror" name="regexerror" #if($cfData.getRegexError())value="$cfData.getRegexError()"#end/>
+            </div>
+            <div class="field-group">
+                <label for="jqlclause">$i18n.getText("uniqueregex.jql")</label>
+                <textarea rows="5" cols="30" id="jqlclause" name="jqlclause">#if($cfData.getJql())$cfData.getJql()#end</textarea>
+            </div>
+            <div class="field-group">
+                <label for="targetcf">$i18n.getText("uniqueregex.targetfield")</label>
+                <select id="targetcf" name="targetcf">
+                    #foreach($cf in $cfs.entrySet())
+                    <option #if($cf.key == $cfData.getTargetCf())selected="selected"#end value="$cf.key">$cf.value</option>
+                    #end
+                </select>
+            </div>
+            <div class="buttons-container">
+                <div class="buttons">
+                    <input class="button submit" type="submit" name="add" value="$action.getText("common.words.save")" accesskey="S" title="Press Alt+Shift+S to submit form"/>
+                    <input class="button submit" id="cancelButton" type="button" accesskey="`" title="Cancel (Alt+Shift + `)" name="Cancel" value="$action.getText("common.words.cancel")" onclick="window.history.back();"/>
+                </div>
+            </div>
+        </form>
+    </body>
+</html>
