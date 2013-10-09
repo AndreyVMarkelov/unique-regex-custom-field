@@ -20,7 +20,7 @@
             </div>
             <div class="field-group">
                 <label for="regexerror">$i18n.getText("uniqueregex.regexerror")</label>
-                <input type="text" id="regexerror" name="regexerror" #if($cfData.getRegexError())value="$cfData.getRegexError()"#end/>
+                <textarea rows="5" cols="30" id="regexerror" name="regexerror">$!cfData.getRegexError()</textarea>
             </div>
             <div class="field-group">
                 <label for="jqlclause">$i18n.getText("uniqueregex.jql")</label>
@@ -29,8 +29,8 @@
             <div class="field-group">
                 <label for="targetcf">$i18n.getText("uniqueregex.targetfield")</label>
                 <select id="targetcf" name="targetcf">
-                    #foreach($cf in $cfs.entrySet())
-                    <option #if($cf.key == $cfData.getTargetCf())selected="selected"#end value="$cf.key">$cf.value</option>
+                    #foreach($cf in $action.getCustomFields())
+                    <option #if($cf.getId() == $cfData.getTargetCf())selected="selected"#end value="$cf.getId()">$cf.getName()</option>
                     #end
                 </select>
             </div>

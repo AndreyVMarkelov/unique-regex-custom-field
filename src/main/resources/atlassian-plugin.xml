@@ -47,6 +47,16 @@
         </actions>
     </webwork1>
 
+    <webwork1 key="unique_regex_field_action" name="Unique regex field configure action" class="java.lang.Object">
+        <actions>
+            <action name="ru.mail.jira.plugins.UniqueRegexFieldConfig" alias="UniqueRegexFieldConfig">
+                <view name="input">/templates/uniqueregexconfigfield.vm</view>
+                <view name="success">/templates/uniqueregexconfigfield.vm</view>
+                <view name="permissionviolation">/secure/views/permissionviolation.jsp</view>
+            </action>
+        </actions>
+    </webwork1>
+
     <web-resource key="juniqueregexfield" name="Unique Regex CFs Resources">
         <transformation extension="js">
             <transformer key="jsI18n"/>
