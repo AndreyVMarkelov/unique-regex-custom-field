@@ -3,15 +3,15 @@
         <description>${project.description}</description>
         <version>${project.version}</version>
         <vendor name="${project.organization.name}" url="${project.organization.url}" />
-        <param name="plugin-logo">/media/michen.png</param>
-        <param name="plugin-icon">/media/michen.png</param>
-        <param name="vendor-icon">/media/icon.png</param>
-        <param name="vendor-logo">/media/logo.png</param>
+        <param name="plugin-logo">/media/regexLogo.png</param>
+        <param name="plugin-icon">/media/regexIcon.png</param>
+        <param name="vendor-icon">/media/vicon.png</param>
+        <param name="vendor-logo">/media/vicon.png</param>
     </plugin-info>
 
     <resource type="i18n" name="i18n" location="i18n.uniqueregex"/>
 
-    <customfield-type key="unique-regex-cf" name="Unique regex custom field" class="ru.mail.jira.plugins.UniqueRegexCF">
+    <customfield-type key="unique-regex-cf" name="Unique regex custom field" class="ru.andreymarkelov.atlas.plugins.ur.UniqueRegexCF">
         <description>Custom Field that check uniqueness and matching regular expression.</description>
         <resource type="velocity" name="view" location="templates/view-uniqueregex.vm"/>
         <resource type="velocity" name="column-view" location="templates/column-view-uniqueregex.vm"/>
@@ -20,7 +20,7 @@
     </customfield-type>
 
     <customfield-searcher key="mailru-select-searcher" name="Unique regex custom field searcher"
-                          i18n-name-key="uniqueregex.admin.seacrher" class="ru.mail.jira.plugins.UrSearcher">
+                          i18n-name-key="uniqueregex.admin.seacrher" class="ru.andreymarkelov.atlas.plugins.ur.UrSearcher">
         <description>Allow searching for unique regex custom field.</description>
         <resource type="velocity" name="label" location="templates/label-uniqueregex.vm"/>
         <resource type="velocity" name="search" location="templates/search-uniqueregex.vm"/>
@@ -38,7 +38,7 @@
 
     <webwork1 key="unique_regex_action" name="Unique regex fields configure action" class="java.lang.Object">
         <actions>
-            <action name="ru.mail.jira.plugins.UniqueRegexConfig" alias="UniqueRegexConfig">
+            <action name="ru.andreymarkelov.atlas.plugins.ur.UniqueRegexConfig" alias="UniqueRegexConfig">
                 <view name="input">/templates/uniqueregexconfig.vm</view>
                 <view name="success">/templates/uniqueregexconfig.vm</view>
                 <view name="permissionviolation">/secure/views/permissionviolation.jsp</view>
@@ -49,7 +49,7 @@
 
     <webwork1 key="unique_regex_field_action" name="Unique regex field configure action" class="java.lang.Object">
         <actions>
-            <action name="ru.mail.jira.plugins.UniqueRegexFieldConfig" alias="UniqueRegexFieldConfig">
+            <action name="ru.andreymarkelov.atlas.plugins.ur.UniqueRegexFieldConfig" alias="UniqueRegexFieldConfig">
                 <view name="input">/templates/uniqueregexconfigfield.vm</view>
                 <view name="success">/templates/uniqueregexconfigfield.vm</view>
                 <view name="permissionviolation">/secure/views/permissionviolation.jsp</view>
@@ -65,7 +65,7 @@
     </web-resource>
 
     <!-- Components -->
-    <component key="unique-regex-manager" name="Manager of unique regex fields" class="ru.mail.jira.plugins.UniqueRegexMgrImpl"/>
+    <component key="unique-regex-manager" name="Manager of unique regex fields" class="ru.andreymarkelov.atlas.plugins.ur.UniqueRegexMgrImpl"/>
     <component-import key="pluginSettingsFactory">
         <interface>com.atlassian.sal.api.pluginsettings.PluginSettingsFactory</interface>
     </component-import>

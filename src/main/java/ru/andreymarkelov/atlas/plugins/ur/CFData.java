@@ -1,4 +1,4 @@
-package ru.mail.jira.plugins;
+package ru.andreymarkelov.atlas.plugins.ur;
 
 public class CFData {
     private String cfKey;

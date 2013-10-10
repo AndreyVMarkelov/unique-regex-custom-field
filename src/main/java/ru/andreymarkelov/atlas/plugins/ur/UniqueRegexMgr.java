@@ -1,4 +1,4 @@
-package ru.mail.jira.plugins;
+package ru.andreymarkelov.atlas.plugins.ur;
 
 public interface UniqueRegexMgr {
     CFData getCFData(String cfKey);

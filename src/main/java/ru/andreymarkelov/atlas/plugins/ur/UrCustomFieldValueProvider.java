@@ -1,4 +1,4 @@
-package ru.mail.jira.plugins;
+package ru.andreymarkelov.atlas.plugins.ur;
 
 import com.atlassian.jira.issue.customfields.CustomFieldValueProvider;
 import com.atlassian.jira.issue.customfields.MultiSelectCustomFieldValueProvider;

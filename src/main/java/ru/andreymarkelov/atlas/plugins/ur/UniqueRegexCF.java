@@ -1,4 +1,4 @@
-package ru.mail.jira.plugins;
+package ru.andreymarkelov.atlas.plugins.ur;
 
 import java.util.List;
 import java.util.regex.Matcher;
@@ -24,11 +24,6 @@ import com.atlassian.jira.util.ErrorCollection;
 import com.atlassian.jira.util.JiraWebUtils;
 import com.atlassian.jira.web.bean.PagerFilter;
 
-/**
- * Unique regex custon field.
- * 
- * @author Andrey Markelov
- */
 public class UniqueRegexCF extends TextCFType {
     private static Log log = LogFactory.getLog(UniqueRegexCF.class);
 
@@ -95,7 +90,7 @@ public class UniqueRegexCF extends TextCFType {
                 User user = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
                 SearchService.ParseResult parseResult = searchService.parseQuery(user, cfData.getJql());
                 if (parseResult.isValid()) {
-                    CustomField tCf = cfMgr.getCustomFieldObject(cfData.getCfKey());
+                    CustomField tCf = cfMgr.getCustomFieldObject(cfData.getTargetCf());
                     if (tCf != null) {
                         try {
                             SearchResults results = searchService.search(
@@ -114,7 +109,7 @@ public class UniqueRegexCF extends TextCFType {
                                 }
 
                                 if (tVal != null && tVal.toString().equals(cfVal) && !isSameIssue) {
-                                    errorCollectionToAddTo.addError(config.getCustomField().getId(), getI18nBean().getText("uniqueregex.unique"));
+                                    errorCollectionToAddTo.addError(config.getCustomField().getId(), getI18nBean().getText("uniqueregex.unique", cfData.getJql()));
                                     return;
                                 }
                             }

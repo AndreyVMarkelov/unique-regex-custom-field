@@ -1,4 +1,4 @@
-package ru.mail.jira.plugins;
+package ru.andreymarkelov.atlas.plugins.ur;
 
 import com.atlassian.sal.api.pluginsettings.PluginSettingsFactory;
 

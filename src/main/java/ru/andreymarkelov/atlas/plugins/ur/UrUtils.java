@@ -1,4 +1,4 @@
-package ru.mail.jira.plugins;
+package ru.andreymarkelov.atlas.plugins.ur;
 
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
