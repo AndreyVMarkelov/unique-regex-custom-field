@@ -30,9 +30,18 @@
 
     <web-item key="unique_regex_configuration" name="Unique regex fields configuration" section="system.admin/globalsettings" weight="95">
         <label key="uniqueregex.admin.title"/>
-        <condition class="com.atlassian.jira.plugin.webfragment.conditions.JiraGlobalPermissionCondition">
-            <param name="permission">admin</param>
-        </condition>
+        <conditions type="AND">
+            <condition class="com.atlassian.jira.plugin.webfragment.conditions.JiraGlobalPermissionCondition"><param name="permission">admin</param></condition>
+            <condition class="ru.andreymarkelov.atlas.plugins.ur.IsPriorToJiraVersion"><param name="majorVersion">6</param><param name="minorVersion">0</param></condition>
+        </conditions>
+        <link linkId="unique_regex_configuration">/secure/UniqueRegexConfig!default.jspa</link>
+    </web-item>
+    <web-item key="unique_regex_configuration_new" name="Unique regex fields configuration" section="admin_system_menu/top_system_section" weight="95">
+        <label key="uniqueregex.admin.title"/>
+        <conditions type="AND">
+            <condition class="com.atlassian.jira.plugin.webfragment.conditions.JiraGlobalPermissionCondition"><param name="permission">admin</param></condition>
+            <condition class="ru.andreymarkelov.atlas.plugins.ur.IsAtLeastJiraVersion"><param name="majorVersion">6</param><param name="minorVersion">0</param></condition>
+        </conditions>
         <link linkId="unique_regex_configuration">/secure/UniqueRegexConfig!default.jspa</link>
     </web-item>
 
