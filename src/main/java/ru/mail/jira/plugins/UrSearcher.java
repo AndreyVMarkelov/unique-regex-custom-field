@@ -1,7 +1,3 @@
-/*
- * Created by Andrey Markelov 28-10-2012.
- * Copyright Mail.Ru Group 2012. All rights reserved.
- */
 package ru.mail.jira.plugins;
 
 import java.util.Comparator;
@@ -22,120 +18,76 @@ import com.atlassian.jira.jql.operand.JqlOperandResolver;
 import com.atlassian.jira.jql.util.JqlSelectOptionsUtil;
 import com.atlassian.jira.web.FieldVisibilityManager;
 
-/**
- * Searcher.
- * 
- * @author Andrey Markelov
- */
-public class UrSearcher
-    extends ExactTextSearcher
-    implements CustomFieldStattable
-{
-    private static class SortStringComparator implements Comparator<String>
-    {
-        public int compare(String s, String s1)
-        {
+public class UrSearcher extends ExactTextSearcher implements CustomFieldStattable {
+    private static class SortStringComparator implements Comparator<String> {
+        public int compare(String s, String s1) {
             return s.compareTo(s1);
         }
     }
 
     private CustomField customField;
-
     private CustomFieldInputHelper customFieldInputHelper;
-
     private JqlOperandResolver jqlOperandResolver;
-
     private SearchInputTransformer searchInputTransformer;
-
     private SearchRenderer searchRenderer;
 
-    /**
-     * Constructor.
-     */
-    public UrSearcher(
-        JqlOperandResolver jqlOperandResolver,
-        CustomFieldInputHelper customFieldInputHelper)
-    {
+    public UrSearcher(JqlOperandResolver jqlOperandResolver, CustomFieldInputHelper customFieldInputHelper) {
         super(jqlOperandResolver, customFieldInputHelper);
         this.jqlOperandResolver = jqlOperandResolver;
         this.customFieldInputHelper = customFieldInputHelper;
     }
 
     @Override
-    public SearchInputTransformer getSearchInputTransformer()
-    {
+    public SearchInputTransformer getSearchInputTransformer() {
         return searchInputTransformer;
     }
 
     @Override
-    public SearchRenderer getSearchRenderer()
-    {
+    public SearchRenderer getSearchRenderer() {
         return searchRenderer;
     }
 
     @Override
-    public LuceneFieldSorter<String> getSorter(final CustomField customField)
-    {
-        return new TextFieldSorter(customField.getId())
-        {
+    public LuceneFieldSorter<String> getSorter(final CustomField customField) {
+        return new TextFieldSorter(customField.getId()) {
             @Override
-            public Comparator<String> getComparator()
-            {
+            public Comparator<String> getComparator() {
                 return new SortStringComparator();
             }
         };
     }
 
-    public StatisticsMapper getStatisticsMapper(CustomField customField)
-    {
-        return new AbstractCustomFieldStatisticsMapper(customField)
-        {
+    public StatisticsMapper getStatisticsMapper(CustomField customField) {
+        return new AbstractCustomFieldStatisticsMapper(customField) {
             @Override
-            public Comparator getComparator()
-            {
-                return new Comparator()
-                {
-                    public int compare(Object o1, Object o2)
-                    {
-                        if (o1 == null && o2 == null)
-                        {
+            public Comparator getComparator() {
+                return new Comparator() {
+                    public int compare(Object o1, Object o2) {
+                        if (o1 == null && o2 == null) {
                             return 0;
-                        }
-                        else if (o1 == null)
-                        {
+                        } else if (o1 == null) {
                             return 1;
-                        }
-                        else if (o2 == null)
-                        {
+                        } else if (o2 == null) {
                             return -1;
                         }
-
                         return ((String) o1).compareTo((String) o2);
                     }
                 };
             }
 
             @Override
-            protected String getSearchValue(Object o)
-            {
-                if( o == null )
-                {
+            protected String getSearchValue(Object o) {
+                if( o == null ) {
                     return null;
-                }
-                else
-                {
+                } else {
                     return o.toString();
                 }
             }
 
-            public Object getValueFromLuceneField(String id)
-            {
-                if(id != null)
-                {
+            public Object getValueFromLuceneField(String id) {
+                if(id != null) {
                     return id;
-                }
-                else
-                {
+                } else {
                     return null;
                 }
             }
@@ -143,10 +95,8 @@ public class UrSearcher
     }
 
     @Override
-    public void init(CustomField field)
-    {
+    public void init(CustomField field) {
         customField = field;
-
         ClauseNames clauseNames = customField.getClauseNames();
         JqlSelectOptionsUtil jqlSelectOptionsUtil = ComponentManager.getComponentInstanceOfType(JqlSelectOptionsUtil.class);
         QueryContextConverter queryContextConverter = new QueryContextConverter();
@@ -160,14 +110,12 @@ public class UrSearcher
             jqlSelectOptionsUtil,
             queryContextConverter,
             customFieldInputHelper);
-
         searchRenderer = new UrCustomFieldRenderer(
             clauseNames,
             getDescriptor(),
             customField,
             new UrCustomFieldValueProvider(),
             fieldVisibilityManager);
-
         super.init(field);
     }
 }

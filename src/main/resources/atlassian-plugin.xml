@@ -12,7 +12,7 @@
     <resource type="i18n" name="i18n" location="i18n.uniqueregex"/>
 
     <customfield-type key="unique-regex-cf" name="Unique regex custom field" class="ru.mail.jira.plugins.UniqueRegexCF">
-        <description>Unique regex custom field.</description>
+        <description>Custom Field that check uniqueness and matching regular expression.</description>
         <resource type="velocity" name="view" location="templates/view-uniqueregex.vm"/>
         <resource type="velocity" name="column-view" location="templates/column-view-uniqueregex.vm"/>
         <resource type="velocity" name="xml" location="templates/xml-uniqueregex.vm"/>
@@ -61,15 +61,8 @@
         <transformation extension="js">
             <transformer key="jsI18n"/>
         </transformation>
-        <resource type="download" name="uniqueregex.js" location="media/uniqueregex.js"/>
         <resource type="download" name="uniqueregex.css" location="media/uniqueregex.css"/>
     </web-resource>
-
-    <!-- Rest resources -->
-    <rest key="mailrucal-resources" path="/uniqueregexfield" version="1.0">
-        <description>Provides the REST resource for the "uniqueregexfield" plugin.</description>
-    </rest>
-    <!-- End rest -->
 
     <!-- Components -->
     <component key="unique-regex-manager" name="Manager of unique regex fields" class="ru.mail.jira.plugins.UniqueRegexMgrImpl"/>

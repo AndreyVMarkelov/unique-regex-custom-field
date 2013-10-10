@@ -1,5 +1,3 @@
-## Created by Andrey Markelov 28-10-2012.
-## Copyright Mail.Ru Group 2012. All rights reserved.
 #if($renderedValue)
 <customfieldvalue>$xmlutils.escape($renderedValue)</customfieldvalue>
 #elseif ($value)

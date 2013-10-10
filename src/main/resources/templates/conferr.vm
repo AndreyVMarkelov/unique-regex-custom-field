@@ -1,8 +1,0 @@
-## Created by Andrey Markelov 28-10-2012.
-## Copyright Mail.Ru Group 2012. All rights reserved.
-$i18n.getText("uniqueregex.incorrectjql")
-<ul>
-#foreach($err in $errs)
-<li>$err</li>
-#end
-</ul>

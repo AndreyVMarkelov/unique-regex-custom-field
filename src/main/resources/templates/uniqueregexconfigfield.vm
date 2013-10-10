@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>$action.getText("ru.mail.todolist.admin.link.field")</title>
+        <title>$action.getTitle()</title>
         <meta name="decorator" content="admin"/>
         $webResourceManager.requireResource("jira.webresources:global-static")
         $webResourceManager.requireResource("jira.webresources:jira-global")
@@ -9,35 +9,43 @@
         $webResourceManager.requireResource("ru.mail.jira.plugins.uniqueregexfield:juniqueregexfield")
     </head>
     <body class="aui">
-        <div id="errorpart" name="errorpart"></div>
+        #if($action.hasAnyErrors())
+        <div class="aui-message error">
+            <span class="aui-icon icon-error"></span>
+            #foreach($error in $action.getErrorMessages())
+            <p><strong>$error</strong></p>
+            #end
+        </div>
+        #end
+        <h3>$action.getTitle()</h3>
         <form class="aui" onsubmit="if (this.submitted) return false; this.submitted = true; return true"
-                          name="jiraform" method="post" action="UniqueRegexConfig.jspa">
+                          name="jiraform" method="post" action="UniqueRegexFieldConfig.jspa">
             <input type="hidden" name="atl_token" value="$atl_token"/>
-            <input type="hidden" name="cfKey" value="$cfKey"/>
+            <input type="hidden" name="customFieldId" value="$customFieldId"/>
             <div class="field-group">
                 <label for="regexclause">$i18n.getText("uniqueregex.regex")</label>
-                <input type="text" id="regexclause" name="regexclause" #if($cfData.getRegex())value="$cfData.getRegex()"#end/>
+                <input type="text" id="regexclause" name="regexclause" value="$!regexclause"/>
             </div>
             <div class="field-group">
                 <label for="regexerror">$i18n.getText("uniqueregex.regexerror")</label>
-                <textarea rows="5" cols="30" id="regexerror" name="regexerror">$!cfData.getRegexError()</textarea>
+                <textarea rows="5" cols="30" id="regexerror" name="regexerror">$!regexerror</textarea>
             </div>
             <div class="field-group">
                 <label for="jqlclause">$i18n.getText("uniqueregex.jql")</label>
-                <textarea rows="5" cols="30" id="jqlclause" name="jqlclause">#if($cfData.getJql())$cfData.getJql()#end</textarea>
+                <textarea rows="5" cols="30" id="jqlclause" name="jqlclause">$!jqlclause</textarea>
             </div>
             <div class="field-group">
                 <label for="targetcf">$i18n.getText("uniqueregex.targetfield")</label>
                 <select id="targetcf" name="targetcf">
                     #foreach($cf in $action.getCustomFields())
-                    <option #if($cf.getId() == $cfData.getTargetCf())selected="selected"#end value="$cf.getId()">$cf.getName()</option>
+                    <option #if($cf.getId() == $action.getDefaultTarget())selected="selected"#end value="$cf.getId()">$cf.getName()</option>
                     #end
                 </select>
             </div>
             <div class="buttons-container">
                 <div class="buttons">
                     <input class="button submit" type="submit" name="add" value="$action.getText("common.words.save")" accesskey="S" title="Press Alt+Shift+S to submit form"/>
-                    <input class="button submit" id="cancelButton" type="button" accesskey="`" title="Cancel (Alt+Shift + `)" name="Cancel" value="$action.getText("common.words.cancel")" onclick="window.history.back();"/>
+                    <a title="Press Alt+Shift+` to cancel" id="assign-issue-cancel" href="$action.getBackLink()" class="aui-button aui-button-link cancel" accesskey="`">$action.getText("common.words.cancel")</a>
                 </div>
             </div>
         </form>

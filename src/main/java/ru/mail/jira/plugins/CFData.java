@@ -1,142 +1,73 @@
-/*
- * Created by Andrey Markelov 28-10-2012.
- * Copyright Mail.Ru Group 2012. All rights reserved.
- */
 package ru.mail.jira.plugins;
 
-/**
- * This structure contains unique regex custom field data.
- * 
- * @author Andrey Markelov
- */
-public class CFData
-{
-    /**
-     * Custom field ID.
-     */
+public class CFData {
     private String cfKey;
-
-    /**
-     * Custom field name.
-     */
     private String cfName;
-
-    /**
-     * JQL.
-     */
     private String jql;
-
-    /**
-     * Regex.
-     */
     private String regex;
-
-    /**
-     * Regex error.
-     */
     private String regexError;
-
-    /**
-     * Custom field ID.
-     */
     private String targetCf;
+    private String targetCfName;
 
-    /**
-     * Constructor.
-     */
-    public CFData(
-        String regex,
-        String regexError,
-        String jql,
-        String targetCf)
-    {
+    public CFData(String regex, String regexError, String jql, String targetCf) {
         this.regex = regex;
         this.regexError = regexError;
         this.jql = jql;
         this.targetCf = targetCf;
-        
     }
 
-    public String getCfKey()
-    {
+    public String getCfKey() {
         return cfKey;
     }
 
-    public String getCfName()
-    {
+    public String getCfName() {
         return cfName;
     }
 
-    public String getJql()
-    {
+    public String getJql() {
         return jql;
     }
 
-    public String getRegex()
-    {
+    public String getRegex() {
         return regex;
     }
 
-    public String getRegexError()
-    {
+    public String getRegexError() {
         return regexError;
     }
 
-    public String getTargetCf()
-    {
-        if (targetCf != null && targetCf.length() > 0)
-        {
+    public String getTargetCf() {
+        if (targetCf != null && targetCf.length() > 0) {
             int index = targetCf.indexOf(":");
-            if (index > 0)
-            {
+            if (index > 0) {
                 return targetCf.substring(0, index);
-            }
-            else
-            {
-                return "";
+            } else {
+                return targetCf;
             }
         }
-        else
-        {
-            return "";
-        }
+        return "";
     }
 
-    public String getTargetCfName()
-    {
-        if (targetCf != null && targetCf.length() > 0)
-        {
-            int index = targetCf.indexOf(":");
-            if (index > 0)
-            {
-                return targetCf.substring(index + 1);
-            }
-            else
-            {
-                return "";
-            }
-        }
-        else
-        {
-            return "";
-        }
+    public String getTargetCfName() {
+        return targetCfName;
     }
 
-    public void setCfKey(String cfKey)
-    {
+    public void setCfKey(String cfKey) {
         this.cfKey = cfKey;
     }
 
-    public void setCfName(String cfName)
-    {
+    public void setCfName(String cfName) {
         this.cfName = cfName;
     }
 
+    public void setTargetCfName(String targetCfName) {
+        this.targetCfName = targetCfName;
+    }
+
     @Override
-    public String toString()
-    {
-        return "CFData[cfKey=" + cfKey + ", cfName=" + cfName + ", jql=" + jql
-            + ", regex=" + regex + ", targetCf=" + targetCf + ", regexError=" +
-            regexError + "]";
+    public String toString() {
+        return "CFData [cfKey=" + cfKey + ", cfName=" + cfName + ", jql=" + jql
+            + ", regex=" + regex + ", regexError=" + regexError
+            + ", targetCf=" + targetCf + ", targetCfName=" + targetCfName + "]";
     }
 }

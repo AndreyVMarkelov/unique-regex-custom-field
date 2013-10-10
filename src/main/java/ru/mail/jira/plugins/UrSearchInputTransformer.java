@@ -1,7 +1,3 @@
-/*
- * Created by Andrey Markelov 28-10-2012.
- * Copyright Mail.Ru Group 2012. All rights reserved.
- */
 package ru.mail.jira.plugins;
 
 import java.util.ArrayList;
@@ -28,111 +24,75 @@ import com.atlassian.query.operand.Operand;
 import com.atlassian.query.operand.SingleValueOperand;
 import com.atlassian.query.operator.Operator;
 
-/**
- * Search input transformer.
- * 
- * @author Andrey Markelov
- */
-public class UrSearchInputTransformer
-    extends MultiSelectCustomFieldSearchInputTransformer
-{
+public class UrSearchInputTransformer extends MultiSelectCustomFieldSearchInputTransformer {
     private JqlOperandResolver jqlOperandResolver;
 
-    /**
-     * Constructor.
-     */
     public UrSearchInputTransformer(
-        String urlParameterName,
-        ClauseNames clauseNames,
-        CustomField field,
-        JqlOperandResolver jqlOperandResolver,
-        JqlSelectOptionsUtil jqlSelectOptionsUtil,
-        QueryContextConverter queryContextConverter,
-        CustomFieldInputHelper customFieldInputHelper)
-    {
+            String urlParameterName,
+            ClauseNames clauseNames,
+            CustomField field,
+            JqlOperandResolver jqlOperandResolver,
+            JqlSelectOptionsUtil jqlSelectOptionsUtil,
+            QueryContextConverter queryContextConverter,
+            CustomFieldInputHelper customFieldInputHelper) {
         super(urlParameterName, clauseNames, field, jqlOperandResolver, jqlSelectOptionsUtil, queryContextConverter, customFieldInputHelper);
         this.jqlOperandResolver = jqlOperandResolver;
     }
 
-    public boolean doRelevantClausesFitFilterForm(
-        User searcher,
-        Query query,
-        SearchContext searchContext)
-    {
-        if(query != null && query.getWhereClause() != null)
-        {
+    public boolean doRelevantClausesFitFilterForm(User searcher, Query query, SearchContext searchContext) {
+        if(query != null && query.getWhereClause() != null) {
             boolean result = true;
             Clause whereClause = query.getWhereClause();
             SimpleNavigatorCollectorVisitor collector = new SimpleNavigatorCollectorVisitor(getCustomField().getClauseNames().getJqlFieldNames());
             whereClause.accept(collector);
 
             List<TerminalClause> clauseList = collector.getClauses();
-            for(TerminalClause clause : clauseList)
-            {
-                if(!hasValidSimpleOperators(clause.getOperator()) || !hasValidSimpleOperand(clause.getOperand()))
-                {
+            for(TerminalClause clause : clauseList) {
+                if(!hasValidSimpleOperators(clause.getOperator()) || !hasValidSimpleOperand(clause.getOperand())) {
                     result = false;
                 }
             }
-
             return result;
         }
-
         return false;
     }
 
-    protected CustomFieldParams getParamsFromSearchRequest(
-        User searcher,
-        Query query,
-        SearchContext searchContext)
-    {
+    protected CustomFieldParams getParamsFromSearchRequest(User searcher, Query query, SearchContext searchContext) {
         List<String> params = new ArrayList<String>();
-        if(query != null && query.getWhereClause() != null)
-        {
+        if(query != null && query.getWhereClause() != null) {
             Clause whereClause = query.getWhereClause();
             SimpleNavigatorCollectorVisitor collector = new SimpleNavigatorCollectorVisitor(getCustomField().getClauseNames().getJqlFieldNames());
             whereClause.accept(collector);
 
             List<TerminalClause> clauseList = collector.getClauses();
-            for(TerminalClause clause : clauseList)
-            {
+            for(TerminalClause clause : clauseList) {
                 Operand operand = clause.getOperand();
-                if(jqlOperandResolver.isValidOperand(operand))
-                {
-                    if(jqlOperandResolver.isFunctionOperand(operand))
-                    {
+                if(jqlOperandResolver.isValidOperand(operand)) {
+                    if(jqlOperandResolver.isFunctionOperand(operand)) {
                         jqlOperandResolver.sanitiseFunctionOperand(searcher, (FunctionOperand)operand);
                     }
 
                     List<QueryLiteral> operandValues = jqlOperandResolver.getValues(searcher, operand, clause);
-                    for(QueryLiteral value : operandValues)
-                    {
+                    for(QueryLiteral value : operandValues) {
                         params.add(value.getStringValue());
                     }
                 }
             }
         }
-
         return new CustomFieldParamsImpl(getCustomField(), params);
     }
 
-    protected boolean hasValidSimpleOperand(Operand operand)
-    {
-        if(operand instanceof SingleValueOperand || operand instanceof MultiValueOperand)
-        {
+    protected boolean hasValidSimpleOperand(Operand operand) {
+        if(operand instanceof SingleValueOperand || operand instanceof MultiValueOperand) {
             return true;
         }
-
         return false;
     }
 
-    protected boolean hasValidSimpleOperators(Operator operator)
-    {
-        if(operator == Operator.EQUALS || operator == Operator.IN)
-        {
+    protected boolean hasValidSimpleOperators(Operator operator) {
+        if(operator == Operator.EQUALS || operator == Operator.IN) {
             return true;
         }
-
         return false;
     }
 }

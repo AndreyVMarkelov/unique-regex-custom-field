@@ -5,21 +5,44 @@ import java.util.regex.PatternSyntaxException;
 
 import com.atlassian.jira.bc.issue.search.SearchService;
 import com.atlassian.jira.component.ComponentAccessor;
+import com.atlassian.jira.issue.CustomFieldManager;
+import com.atlassian.jira.issue.fields.CustomField;
 
 public class UrUtils {
     public static boolean checkJQL(String jql) {
+        if (isEmpty(jql)) {
+            return true;
+        }
+
         SearchService searchService = ComponentAccessor.getOSGiComponentInstanceOfType(SearchService.class);
         SearchService.ParseResult parseResult = searchService.parseQuery(ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser(), jql);
         return parseResult.isValid();
     }
 
     public static boolean checkRegex(String regex) {
+        if (isEmpty(regex)) {
+            return true;
+        }
+
         try {
             Pattern.compile(regex);
             return true;
         } catch (PatternSyntaxException ex) {
             return false;
         }
+    }
+
+    public static String getCfName(CustomFieldManager cfMgr, String cfKey) {
+        CustomField field = cfMgr.getCustomFieldObject(cfKey);
+        if (field != null) {
+            return field.getName();
+        } else {
+            return cfKey;
+        }
+    }
+
+    public static boolean isEmpty(String str) {
+        return str == null || str.length() == 0;
     }
 
     private UrUtils() {

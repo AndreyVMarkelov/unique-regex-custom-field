@@ -1,5 +1,1 @@
-## Created by Andrey Markelov 29-10-2012.
-## Copyright Mail.Ru Group 2012. All rights reserved.
-#if($value)
-$value
-#end
+#if($value)$value#end

@@ -34,7 +34,21 @@ public class UniqueRegexFieldConfig extends JiraWebActionSupport {
             return PERMISSION_VIOLATION_RESULT;
         }
 
-        return super.doDefault();
+        if (customFieldId == null || customFieldId.length() == 0) {
+            return getRedirect("UniqueRegexConfig!default.jspa");
+        }
+
+        CustomField field = cfMgr.getCustomFieldObject(customFieldId);
+        if (field == null) {
+            return getRedirect("UniqueRegexConfig!default.jspa");
+        }
+
+        CFData data = urMgr.getCFData(customFieldId);
+        jqlclause = data.getJql();
+        regexclause = data.getRegex();
+        regexerror = data.getRegexError();
+        targetcf = data.getTargetCf();
+        return INPUT;
     }
 
     @Override
@@ -43,12 +57,32 @@ public class UniqueRegexFieldConfig extends JiraWebActionSupport {
             return PERMISSION_VIOLATION_RESULT;
         }
 
-        return super.doExecute();
+        urMgr.setCfJql(customFieldId, jqlclause);
+        urMgr.setCfRegex(customFieldId, regexclause);
+        urMgr.setCfRegexError(customFieldId, regexerror);
+        urMgr.setCfTarget(customFieldId, targetcf);
+        return getRedirect("UniqueRegexConfig!default.jspa?saved=true");
     }
 
     @Override
     protected void doValidation() {
+        if (!UrUtils.checkJQL(jqlclause)) {
+            addErrorMessage(getText("uniqueregex.incorrectjql"));
+        }
+
+        if (!UrUtils.checkRegex(regexclause)) {
+            addErrorMessage(getText("uniqueregex.incorrectregex"));
+        }
+
         super.doValidation();
+    }
+
+    public String getBackLink() {
+        return getBaseUrl().concat("/secure/UniqueRegexConfig!default.jspa");
+    }
+
+    public String getBaseUrl() {
+        return applicationProperties.getBaseUrl();
     }
 
     public String getCustomFieldId() {
@@ -57,6 +91,14 @@ public class UniqueRegexFieldConfig extends JiraWebActionSupport {
 
     public List<CustomField> getCustomFields() {
         return cfMgr.getCustomFieldObjects();
+    }
+
+    public String getDefaultTarget() {
+        if (UrUtils.isEmpty(targetcf)) {
+            return customFieldId;
+        } else {
+            return targetcf;
+        }
     }
 
     public String getJqlclause() {
@@ -73,6 +115,10 @@ public class UniqueRegexFieldConfig extends JiraWebActionSupport {
 
     public String getTargetcf() {
         return targetcf;
+    }
+
+    public String getTitle() {
+        return getText("uniqueregex.admin.field.title", UrUtils.getCfName(cfMgr, customFieldId));
     }
 
     public boolean hasAdminPermission() {
