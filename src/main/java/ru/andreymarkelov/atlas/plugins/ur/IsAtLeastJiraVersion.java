@@ -31,4 +31,3 @@ public class IsAtLeastJiraVersion implements Condition {
         return true;
     }
 }
-

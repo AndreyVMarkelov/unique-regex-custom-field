@@ -52,6 +52,7 @@ public class UniqueRegexFieldConfig extends JiraWebActionSupport {
     }
 
     @Override
+    @com.atlassian.jira.security.xsrf.RequiresXsrfCheck
     protected String doExecute() throws Exception {
         if (!hasAdminPermission()) {
             return PERMISSION_VIOLATION_RESULT;
