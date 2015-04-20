@@ -1,12 +1,13 @@
 <html>
     <head>
         <title>$action.getTitle()</title>
-        <meta name="decorator" content="admin"/>
+        <meta content="admin" name="decorator"/>
+        <meta content="admin_plugins_menu/unique-regex-configuration-section" name="admin.active.section">
+        <meta content="unique-regex-configuration-settings" name="admin.active.tab">
         $webResourceManager.requireResource("jira.webresources:global-static")
         $webResourceManager.requireResource("jira.webresources:jira-global")
         $webResourceManager.requireResource("com.atlassian.auiplugin:ajs")
         $webResourceManager.requireResource("jira.webresources:autocomplete")
-        $webResourceManager.requireResource("ru.mail.jira.plugins.uniqueregexfield:juniqueregexfield")
     </head>
     <body class="aui">
         #if($action.hasAnyErrors())

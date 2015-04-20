@@ -119,7 +119,7 @@ public class UniqueRegexFieldConfig extends JiraWebActionSupport {
     }
 
     public String getTitle() {
-        return getText("uniqueregex.admin.field.title", UrUtils.getCfName(cfMgr, customFieldId));
+        return getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.field.title", UrUtils.getCfName(cfMgr, customFieldId));
     }
 
     public boolean hasAdminPermission() {

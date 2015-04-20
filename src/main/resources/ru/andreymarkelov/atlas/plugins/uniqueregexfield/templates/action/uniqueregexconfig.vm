@@ -1,0 +1,57 @@
+<html>
+    <head>
+        <title>$action.getText("uniqueregex.admin.title")</title>
+        <meta content="admin" name="decorator"/>
+        <meta content="admin_plugins_menu/unique-regex-configuration-section" name="admin.active.section">
+        <meta content="unique-regex-configuration-settings" name="admin.active.tab">
+        $webResourceManager.requireResource("jira.webresources:global-static")
+        $webResourceManager.requireResource("jira.webresources:jira-global")
+        $webResourceManager.requireResource("com.atlassian.auiplugin:ajs")
+    </head>
+    <body class="aui">
+        <section id="content" role="main">
+            <header class="aui-page-header">
+                <div class="aui-page-header-inner">
+                    <div class="aui-page-header-main">
+                        <h1>$i18n.getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.fields.title")</h1>
+                        <p>$i18n.getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.fields.desc")</p>
+                    </div>
+                </div>
+            </header>
+            <div class="aui-page-panel">
+                <div class="aui-page-panel-inner">
+                    <section class="aui-page-panel-content">
+                        <table class="aui">
+                            <thead>
+                                <tr>
+                                    <th id="customfieldid">$action.getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.field.customfieldid")</th>
+                                    <th id="customfieldname">$action.getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.field.customfieldname")</th>
+                                    <th id="regex">$action.getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.field.regex")</th>
+                                    <th id="regexerror">$action.getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.field.regexerror")</th>
+                                    <th id="jql">$action.getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.field.jql")</th>
+                                    <th id="targetfield">$action.getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.field.targetfield")</th>
+                                    <th id="actions">$action.getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.field.actions")</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                #foreach($data in $action.getDatas())
+                                <tr>
+                                    <td headers="customfieldid">$data.getCfKey()</td>
+                                    <td headers="customfieldname">$data.getCfName()</td>
+                                    <td headers="regex">$!data.getRegex()</td>
+                                    <td headers="regexerror">$!data.getRegexError()</td>
+                                    <td headers="jql">$!data.getJql()</td>
+                                    <td headers="targetfield">$!data.getTargetCfName()</td>
+                                    <td headers="actions">
+                                        <a href="UniqueRegexFieldConfig!default.jspa?customFieldId=$data.getCfKey()">$action.getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.field.action.configure")</a>
+                                    </td>
+                                </tr>
+                                #end
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
+            </div>
+        </section>
+    </body>
+</html>
