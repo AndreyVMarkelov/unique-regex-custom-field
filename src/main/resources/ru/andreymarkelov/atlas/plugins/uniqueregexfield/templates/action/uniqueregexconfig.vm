@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>$action.getText("uniqueregex.admin.title")</title>
+        <title>$action.getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.fields.title")</title>
         <meta content="admin" name="decorator"/>
         <meta content="admin_plugins_menu/unique-regex-configuration-section" name="admin.active.section">
         <meta content="unique-regex-configuration-settings" name="admin.active.tab">

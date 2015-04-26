@@ -1,8 +1,9 @@
-package ru.andreymarkelov.atlas.plugins.ur;
+package ru.andreymarkelov.atlas.plugins.ur.field;
 
 import java.util.Comparator;
-import com.atlassian.jira.ComponentManager;
+
 import com.atlassian.jira.bc.issue.search.QueryContextConverter;
+import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.issue.customfields.searchers.ExactTextSearcher;
 import com.atlassian.jira.issue.customfields.searchers.transformer.CustomFieldInputHelper;
 import com.atlassian.jira.issue.customfields.statistics.AbstractCustomFieldStatisticsMapper;
@@ -31,8 +32,8 @@ public class UrSearcher extends ExactTextSearcher implements CustomFieldStattabl
     private SearchInputTransformer searchInputTransformer;
     private SearchRenderer searchRenderer;
 
-    public UrSearcher(JqlOperandResolver jqlOperandResolver, CustomFieldInputHelper customFieldInputHelper) {
-        super(jqlOperandResolver, customFieldInputHelper);
+    public UrSearcher(JqlOperandResolver jqlOperandResolver, CustomFieldInputHelper customFieldInputHelper, FieldVisibilityManager fieldVisibilityManager) {
+        super(jqlOperandResolver, customFieldInputHelper, fieldVisibilityManager);
         this.jqlOperandResolver = jqlOperandResolver;
         this.customFieldInputHelper = customFieldInputHelper;
     }
@@ -57,12 +58,12 @@ public class UrSearcher extends ExactTextSearcher implements CustomFieldStattabl
         };
     }
 
-    public StatisticsMapper getStatisticsMapper(CustomField customField) {
+    public StatisticsMapper<?> getStatisticsMapper(CustomField customField) {
         return new AbstractCustomFieldStatisticsMapper(customField) {
             @Override
-            public Comparator getComparator() {
-                return new Comparator() {
-                    public int compare(Object o1, Object o2) {
+            public Comparator<String> getComparator() {
+                return new Comparator<String>() {
+                    public int compare(String o1, String o2) {
                         if (o1 == null && o2 == null) {
                             return 0;
                         } else if (o1 == null) {
@@ -70,7 +71,7 @@ public class UrSearcher extends ExactTextSearcher implements CustomFieldStattabl
                         } else if (o2 == null) {
                             return -1;
                         }
-                        return ((String) o1).compareTo((String) o2);
+                        return (o1).compareTo(o2);
                     }
                 };
             }
@@ -98,9 +99,9 @@ public class UrSearcher extends ExactTextSearcher implements CustomFieldStattabl
     public void init(CustomField field) {
         customField = field;
         ClauseNames clauseNames = customField.getClauseNames();
-        JqlSelectOptionsUtil jqlSelectOptionsUtil = ComponentManager.getComponentInstanceOfType(JqlSelectOptionsUtil.class);
+        JqlSelectOptionsUtil jqlSelectOptionsUtil = ComponentAccessor.getComponent(JqlSelectOptionsUtil.class);
         QueryContextConverter queryContextConverter = new QueryContextConverter();
-        FieldVisibilityManager fieldVisibilityManager = ComponentManager.getComponentInstanceOfType(FieldVisibilityManager.class);
+        FieldVisibilityManager fieldVisibilityManager = ComponentAccessor.getComponent(FieldVisibilityManager.class);
 
         searchInputTransformer = new UrSearchInputTransformer(
             customField.getId(),

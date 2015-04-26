@@ -1,4 +1,4 @@
-package ru.andreymarkelov.atlas.plugins.ur;
+package ru.andreymarkelov.atlas.plugins.ur.utils;
 
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -7,6 +7,7 @@ import com.atlassian.jira.bc.issue.search.SearchService;
 import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.fields.CustomField;
+import com.atlassian.jira.user.ApplicationUsers;
 
 public class UrUtils {
     public static boolean checkJQL(String jql) {
@@ -15,7 +16,7 @@ public class UrUtils {
         }
 
         SearchService searchService = ComponentAccessor.getOSGiComponentInstanceOfType(SearchService.class);
-        SearchService.ParseResult parseResult = searchService.parseQuery(ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser(), jql);
+        SearchService.ParseResult parseResult = searchService.parseQuery(ApplicationUsers.toDirectoryUser(ComponentAccessor.getJiraAuthenticationContext().getUser()), jql);
         return parseResult.isValid();
     }
 

@@ -1,18 +1,25 @@
-package ru.andreymarkelov.atlas.plugins.ur;
+package ru.andreymarkelov.atlas.plugins.ur.field;
 
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import ru.andreymarkelov.atlas.plugins.ur.manager.UniqueRegexMgr;
+import ru.andreymarkelov.atlas.plugins.ur.model.CFData;
+import webwork.action.ActionContext;
+
 import com.atlassian.crowd.embedded.api.User;
 import com.atlassian.jira.bc.issue.search.SearchService;
-import com.atlassian.jira.component.ComponentAccessor;
 import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.customfields.impl.FieldValidationException;
-import com.atlassian.jira.issue.customfields.impl.TextCFType;
+import com.atlassian.jira.issue.customfields.impl.GenericTextCFType;
 import com.atlassian.jira.issue.customfields.manager.GenericConfigManager;
 import com.atlassian.jira.issue.customfields.persistence.CustomFieldValuePersister;
 import com.atlassian.jira.issue.customfields.view.CustomFieldParams;
@@ -20,30 +27,46 @@ import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.issue.fields.config.FieldConfig;
 import com.atlassian.jira.issue.search.SearchException;
 import com.atlassian.jira.issue.search.SearchResults;
+import com.atlassian.jira.security.JiraAuthenticationContext;
+import com.atlassian.jira.user.ApplicationUsers;
 import com.atlassian.jira.util.ErrorCollection;
-import com.atlassian.jira.util.JiraWebUtils;
 import com.atlassian.jira.web.bean.PagerFilter;
 
-public class UniqueRegexCF extends TextCFType {
+public class UniqueRegexCF extends GenericTextCFType {
     private static Log log = LogFactory.getLog(UniqueRegexCF.class);
 
     private final CustomFieldManager cfMgr;
     private final SearchService searchService;
     private final UniqueRegexMgr urMgr;
+    private final JiraAuthenticationContext authenticationContext;
 
     public UniqueRegexCF(
             CustomFieldValuePersister customFieldValuePersister,
             GenericConfigManager genericConfigManager,
             UniqueRegexMgr urMgr,
             SearchService searchService,
-            CustomFieldManager cfMgr) {
+            CustomFieldManager cfMgr,
+            JiraAuthenticationContext authenticationContext) {
         super(customFieldValuePersister, genericConfigManager);
         this.urMgr = urMgr;
         this.searchService = searchService;
         this.cfMgr = cfMgr;
+        this.authenticationContext = authenticationContext;
     }
 
-    private Long getIssueId(HttpServletRequest req) {
+    private Long getIssueId(CustomFieldParams relevantParams) {
+        if (relevantParams.containsKey("com.atlassian.jira.internal.issue_id")) {
+            Object obj = relevantParams.getFirstValueForKey("com.atlassian.jira.internal.issue_id");
+            if (obj != null) {
+                return NumberUtils.toLong(obj.toString(), -1L);
+            }
+        }
+
+        HttpServletRequest req = ActionContext.getRequest();
+        if (req == null) {
+            return -1L;
+        }
+
         String[] issueIdStr = req.getParameterValues("id");
         if (issueIdStr == null) {
             issueIdStr = req.getParameterValues("issueId");
@@ -85,23 +108,19 @@ public class UniqueRegexCF extends TextCFType {
                 }
             }
 
-            HttpServletRequest request = JiraWebUtils.getHttpRequest();
             if (cfData.getJql() != null && cfData.getJql().length() > 0) {
-                User user = ComponentAccessor.getJiraAuthenticationContext().getLoggedInUser();
+                User user = ApplicationUsers.toDirectoryUser(authenticationContext.getUser());
                 SearchService.ParseResult parseResult = searchService.parseQuery(user, cfData.getJql());
                 if (parseResult.isValid()) {
                     CustomField tCf = cfMgr.getCustomFieldObject(cfData.getTargetCf());
                     if (tCf != null) {
                         try {
-                            SearchResults results = searchService.search(
-                                user,
-                                parseResult.getQuery(),
-                                PagerFilter.getUnlimitedFilter());
+                            SearchResults results = searchService.search(user, parseResult.getQuery(), PagerFilter.getUnlimitedFilter());
                             List<Issue> issues = results.getIssues();
                             for (Issue i : issues) {
                                 Object tVal = i.getCustomFieldValue(tCf);
                                 boolean isSameIssue = false;
-                                Long currIssueId = getIssueId(request);
+                                Long currIssueId = getIssueId(relevantParams);
                                 if (currIssueId >= 0) {
                                     if (i.getId().equals(currIssueId)) {
                                         isSameIssue = true;

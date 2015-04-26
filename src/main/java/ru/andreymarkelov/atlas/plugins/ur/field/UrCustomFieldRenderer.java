@@ -1,4 +1,4 @@
-package ru.andreymarkelov.atlas.plugins.ur;
+package ru.andreymarkelov.atlas.plugins.ur.field;
 
 import com.atlassian.crowd.embedded.api.User;
 import com.atlassian.jira.issue.customfields.CustomFieldValueProvider;

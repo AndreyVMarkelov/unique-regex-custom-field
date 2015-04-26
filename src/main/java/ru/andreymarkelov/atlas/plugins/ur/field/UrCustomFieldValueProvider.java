@@ -1,4 +1,4 @@
-package ru.andreymarkelov.atlas.plugins.ur;
+package ru.andreymarkelov.atlas.plugins.ur.field;
 
 import com.atlassian.jira.issue.customfields.CustomFieldValueProvider;
 import com.atlassian.jira.issue.customfields.MultiSelectCustomFieldValueProvider;

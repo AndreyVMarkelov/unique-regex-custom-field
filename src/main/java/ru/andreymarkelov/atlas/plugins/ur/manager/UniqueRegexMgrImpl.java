@@ -1,4 +1,6 @@
-package ru.andreymarkelov.atlas.plugins.ur;
+package ru.andreymarkelov.atlas.plugins.ur.manager;
+
+import ru.andreymarkelov.atlas.plugins.ur.model.CFData;
 
 import com.atlassian.sal.api.pluginsettings.PluginSettingsFactory;
 

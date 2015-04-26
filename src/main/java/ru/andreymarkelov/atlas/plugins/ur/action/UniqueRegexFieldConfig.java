@@ -1,20 +1,26 @@
-package ru.andreymarkelov.atlas.plugins.ur;
+package ru.andreymarkelov.atlas.plugins.ur.action;
 
 import java.util.List;
 
-import com.atlassian.crowd.embedded.api.User;
+import ru.andreymarkelov.atlas.plugins.ur.manager.UniqueRegexMgr;
+import ru.andreymarkelov.atlas.plugins.ur.model.CFData;
+import ru.andreymarkelov.atlas.plugins.ur.utils.UrUtils;
+
 import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.fields.CustomField;
-import com.atlassian.jira.security.Permissions;
+import com.atlassian.jira.permission.GlobalPermissionKey;
+import com.atlassian.jira.security.GlobalPermissionManager;
+import com.atlassian.jira.security.JiraAuthenticationContext;
+import com.atlassian.jira.security.xsrf.RequiresXsrfCheck;
 import com.atlassian.jira.web.action.JiraWebActionSupport;
-import com.atlassian.sal.api.ApplicationProperties;
 
 public class UniqueRegexFieldConfig extends JiraWebActionSupport {
     private static final long serialVersionUID = -727825112402972172L;
 
-    private final ApplicationProperties applicationProperties;
     private final UniqueRegexMgr urMgr;
     private final CustomFieldManager cfMgr;
+    private final GlobalPermissionManager globalPermissionManager;
+    private final JiraAuthenticationContext authenticationContext;
 
     private String customFieldId;
     private String regexclause;
@@ -22,10 +28,15 @@ public class UniqueRegexFieldConfig extends JiraWebActionSupport {
     private String jqlclause;
     private String targetcf;
 
-    public UniqueRegexFieldConfig(UniqueRegexMgr urMgr, ApplicationProperties applicationProperties, CustomFieldManager cfMgr) {
+    public UniqueRegexFieldConfig(
+            UniqueRegexMgr urMgr,
+            CustomFieldManager cfMgr,
+            GlobalPermissionManager globalPermissionManager,
+            JiraAuthenticationContext authenticationContext) {
         this.urMgr = urMgr;
-        this.applicationProperties = applicationProperties;
         this.cfMgr = cfMgr;
+        this.globalPermissionManager = globalPermissionManager;
+        this.authenticationContext = authenticationContext;
     }
 
     @Override
@@ -52,7 +63,7 @@ public class UniqueRegexFieldConfig extends JiraWebActionSupport {
     }
 
     @Override
-    @com.atlassian.jira.security.xsrf.RequiresXsrfCheck
+    @RequiresXsrfCheck
     protected String doExecute() throws Exception {
         if (!hasAdminPermission()) {
             return PERMISSION_VIOLATION_RESULT;
@@ -68,22 +79,14 @@ public class UniqueRegexFieldConfig extends JiraWebActionSupport {
     @Override
     protected void doValidation() {
         if (!UrUtils.checkJQL(jqlclause)) {
-            addErrorMessage(getText("uniqueregex.incorrectjql"));
+            addError("jqlclause", authenticationContext.getI18nHelper().getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.field.jql.error.invalid"));
         }
 
         if (!UrUtils.checkRegex(regexclause)) {
-            addErrorMessage(getText("uniqueregex.incorrectregex"));
+            addError("regexclause", authenticationContext.getI18nHelper().getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.field.regex.error.invalid"));
         }
 
         super.doValidation();
-    }
-
-    public String getBackLink() {
-        return getBaseUrl().concat("/secure/UniqueRegexConfig!default.jspa");
-    }
-
-    public String getBaseUrl() {
-        return applicationProperties.getBaseUrl();
     }
 
     public String getCustomFieldId() {
@@ -119,19 +122,13 @@ public class UniqueRegexFieldConfig extends JiraWebActionSupport {
     }
 
     public String getTitle() {
-        return getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.field.title", UrUtils.getCfName(cfMgr, customFieldId));
+        return authenticationContext.getI18nHelper().getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.field.title", UrUtils.getCfName(cfMgr, customFieldId));
     }
 
     public boolean hasAdminPermission() {
-        User user = getLoggedInUser();
-        if (user == null) {
-            return false;
-        }
-
-        if (getPermissionManager().hasPermission(Permissions.ADMINISTER, getLoggedInUser())) {
+        if (globalPermissionManager.hasPermission(GlobalPermissionKey.ADMINISTER, getLoggedInApplicationUser())) {
             return true;
         }
-
         return false;
     }
 

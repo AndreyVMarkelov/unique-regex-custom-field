@@ -14,16 +14,8 @@
     <!-- I18N -->
     <resource type="i18n" name="i18n" location="ru.andreymarkelov.atlas.plugins.uniqueregexfield.i18n.uniqueregex"/>
 
-    <!-- Web Resources -->
-    <web-resource key="juniqueregexfield" name="Unique Regex CFs Resources">
-        <transformation extension="js">
-            <transformer key="jsI18n"/>
-        </transformation>
-        <resource type="download" name="uniqueregex.css" location="/ru/andreymarkelov/atlas/plugins/uniqueregexfield/css/uniqueregex.css"/>
-    </web-resource>
-
     <!-- Custom Fields -->
-    <customfield-type key="unique-regex-cf" name="Unique regex custom field" class="ru.andreymarkelov.atlas.plugins.ur.UniqueRegexCF">
+    <customfield-type key="unique-regex-cf" name="Unique regex custom field" class="ru.andreymarkelov.atlas.plugins.ur.field.UniqueRegexCF">
         <description>Custom Field that check uniqueness and matching regular expression.</description>
         <resource type="velocity" name="view" location="/ru/andreymarkelov/atlas/plugins/uniqueregexfield/templates/field/view-uniqueregex.vm"/>
         <resource type="velocity" name="column-view" location="/ru/andreymarkelov/atlas/plugins/uniqueregexfield/templates/field/column-view-uniqueregex.vm"/>
@@ -34,7 +26,7 @@
 
     <!-- Custom Field Searchers -->
     <customfield-searcher key="mailru-select-searcher" name="Unique regex custom field searcher"
-                          i18n-name-key="uniqueregex.admin.seacrher" class="ru.andreymarkelov.atlas.plugins.ur.UrSearcher">
+                          i18n-name-key="uniqueregex.admin.seacrher" class="ru.andreymarkelov.atlas.plugins.ur.field.UrSearcher">
         <description>Allow searching for unique regex custom field.</description>
         <resource type="velocity" name="label" location="/ru/andreymarkelov/atlas/plugins/uniqueregexfield/templates/field/label-uniqueregex.vm"/>
         <resource type="velocity" name="search" location="/ru/andreymarkelov/atlas/plugins/uniqueregexfield/templates/field/search-uniqueregex.vm"/>
@@ -56,13 +48,13 @@
     <!-- WebWork1 -->
     <webwork1 key="unique_regex_action" name="Unique regex fields configure action" class="java.lang.Object">
         <actions>
-            <action name="ru.andreymarkelov.atlas.plugins.ur.UniqueRegexConfig" alias="UniqueRegexConfig">
+            <action name="ru.andreymarkelov.atlas.plugins.ur.action.UniqueRegexConfig" alias="UniqueRegexConfig">
                 <view name="input">/ru/andreymarkelov/atlas/plugins/uniqueregexfield/templates/action/uniqueregexconfig.vm</view>
                 <view name="success">/ru/andreymarkelov/atlas/plugins/uniqueregexfield/templates/action/uniqueregexconfig.vm</view>
                 <view name="permissionviolation">/secure/views/permissionviolation.jsp</view>
                 <view name="configure">/ru/andreymarkelov/atlas/plugins/uniqueregexfield/templates/action/uniqueregexconfigfield.vm</view>
             </action>
-            <action name="ru.andreymarkelov.atlas.plugins.ur.UniqueRegexFieldConfig" alias="UniqueRegexFieldConfig">
+            <action name="ru.andreymarkelov.atlas.plugins.ur.action.UniqueRegexFieldConfig" alias="UniqueRegexFieldConfig">
                 <view name="input">/ru/andreymarkelov/atlas/plugins/uniqueregexfield/templates/action/uniqueregexconfigfield.vm</view>
                 <view name="success">/ru/andreymarkelov/atlas/plugins/uniqueregexfield/templates/action/uniqueregexconfigfield.vm</view>
                 <view name="permissionviolation">/secure/views/permissionviolation.jsp</view>
@@ -71,7 +63,9 @@
     </webwork1>
 
     <!-- Components -->
-    <component key="unique-regex-manager" name="Manager of unique regex fields" class="ru.andreymarkelov.atlas.plugins.ur.UniqueRegexMgrImpl"/>
+    <component key="unique-regex-manager" name="Manager of unique regex fields" class="ru.andreymarkelov.atlas.plugins.ur.manager.UniqueRegexMgrImpl">
+        <interface>ru.andreymarkelov.atlas.plugins.ur.manager.UniqueRegexMgr</interface>
+    </component>
     <component-import key="pluginSettingsFactory">
         <interface>com.atlassian.sal.api.pluginsettings.PluginSettingsFactory</interface>
     </component-import>

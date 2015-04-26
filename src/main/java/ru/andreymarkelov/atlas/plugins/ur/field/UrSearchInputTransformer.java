@@ -1,4 +1,4 @@
-package ru.andreymarkelov.atlas.plugins.ur;
+package ru.andreymarkelov.atlas.plugins.ur.field;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package ru.andreymarkelov.atlas.plugins.ur;
+package ru.andreymarkelov.atlas.plugins.ur.model;
 
 public class CFData {
     private String cfKey;
