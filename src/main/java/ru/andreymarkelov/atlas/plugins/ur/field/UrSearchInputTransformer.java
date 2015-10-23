@@ -2,7 +2,7 @@ package ru.andreymarkelov.atlas.plugins.ur.field;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.atlassian.crowd.embedded.api.User;
+
 import com.atlassian.jira.bc.issue.search.QueryContextConverter;
 import com.atlassian.jira.issue.customfields.searchers.transformer.CustomFieldInputHelper;
 import com.atlassian.jira.issue.customfields.searchers.transformer.MultiSelectCustomFieldSearchInputTransformer;
@@ -15,6 +15,7 @@ import com.atlassian.jira.issue.search.searchers.transformer.SimpleNavigatorColl
 import com.atlassian.jira.jql.operand.JqlOperandResolver;
 import com.atlassian.jira.jql.operand.QueryLiteral;
 import com.atlassian.jira.jql.util.JqlSelectOptionsUtil;
+import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.query.Query;
 import com.atlassian.query.clause.Clause;
 import com.atlassian.query.clause.TerminalClause;
@@ -39,7 +40,8 @@ public class UrSearchInputTransformer extends MultiSelectCustomFieldSearchInputT
         this.jqlOperandResolver = jqlOperandResolver;
     }
 
-    public boolean doRelevantClausesFitFilterForm(User searcher, Query query, SearchContext searchContext) {
+    @Override
+    public boolean doRelevantClausesFitFilterForm(ApplicationUser searcher, Query query, SearchContext searchContext) {
         if(query != null && query.getWhereClause() != null) {
             boolean result = true;
             Clause whereClause = query.getWhereClause();
@@ -57,7 +59,8 @@ public class UrSearchInputTransformer extends MultiSelectCustomFieldSearchInputT
         return false;
     }
 
-    protected CustomFieldParams getParamsFromSearchRequest(User searcher, Query query, SearchContext searchContext) {
+    @Override
+    protected CustomFieldParams getParamsFromSearchRequest(ApplicationUser searcher, Query query, SearchContext searchContext) {
         List<String> params = new ArrayList<String>();
         if(query != null && query.getWhereClause() != null) {
             Clause whereClause = query.getWhereClause();

@@ -10,11 +10,6 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import ru.andreymarkelov.atlas.plugins.ur.manager.UniqueRegexMgr;
-import ru.andreymarkelov.atlas.plugins.ur.model.CFData;
-import webwork.action.ActionContext;
-
-import com.atlassian.crowd.embedded.api.User;
 import com.atlassian.jira.bc.issue.search.SearchService;
 import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.Issue;
@@ -24,13 +19,18 @@ import com.atlassian.jira.issue.customfields.manager.GenericConfigManager;
 import com.atlassian.jira.issue.customfields.persistence.CustomFieldValuePersister;
 import com.atlassian.jira.issue.customfields.view.CustomFieldParams;
 import com.atlassian.jira.issue.fields.CustomField;
+import com.atlassian.jira.issue.fields.TextFieldCharacterLengthValidator;
 import com.atlassian.jira.issue.fields.config.FieldConfig;
 import com.atlassian.jira.issue.search.SearchException;
 import com.atlassian.jira.issue.search.SearchResults;
 import com.atlassian.jira.security.JiraAuthenticationContext;
-import com.atlassian.jira.user.ApplicationUsers;
+import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.jira.util.ErrorCollection;
 import com.atlassian.jira.web.bean.PagerFilter;
+
+import ru.andreymarkelov.atlas.plugins.ur.manager.UniqueRegexMgr;
+import ru.andreymarkelov.atlas.plugins.ur.model.CFData;
+import webwork.action.ActionContext;
 
 public class UniqueRegexCF extends GenericTextCFType {
     private static Log log = LogFactory.getLog(UniqueRegexCF.class);
@@ -43,11 +43,13 @@ public class UniqueRegexCF extends GenericTextCFType {
     public UniqueRegexCF(
             CustomFieldValuePersister customFieldValuePersister,
             GenericConfigManager genericConfigManager,
+            TextFieldCharacterLengthValidator textFieldCharacterLengthValidator,
+            JiraAuthenticationContext jiraAuthenticationContext,
             UniqueRegexMgr urMgr,
             SearchService searchService,
             CustomFieldManager cfMgr,
             JiraAuthenticationContext authenticationContext) {
-        super(customFieldValuePersister, genericConfigManager);
+        super(customFieldValuePersister, genericConfigManager, textFieldCharacterLengthValidator, jiraAuthenticationContext);
         this.urMgr = urMgr;
         this.searchService = searchService;
         this.cfMgr = cfMgr;
@@ -109,7 +111,7 @@ public class UniqueRegexCF extends GenericTextCFType {
             }
 
             if (cfData.getJql() != null && cfData.getJql().length() > 0) {
-                User user = ApplicationUsers.toDirectoryUser(authenticationContext.getUser());
+                ApplicationUser user = authenticationContext.getLoggedInUser();
                 SearchService.ParseResult parseResult = searchService.parseQuery(user, cfData.getJql());
                 if (parseResult.isValid()) {
                     CustomField tCf = cfMgr.getCustomFieldObject(cfData.getTargetCf());

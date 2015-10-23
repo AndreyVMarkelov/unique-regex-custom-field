@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>ru.mail.jira.plugins</groupId>
     <artifactId>uniqueregexfield</artifactId>
-    <version>1.2.2</version>
+    <version>1.2.3</version>
     <packaging>atlassian-plugin</packaging>
 
     <organization>
@@ -61,8 +61,8 @@
     </build>
 
     <properties>
-        <jira.version>6.3</jira.version>
-        <amps.version>5.0.13</amps.version>
+        <jira.version>7.0.0</jira.version>
+        <amps.version>6.1.0</amps.version>
         <useFastdevCli>false</useFastdevCli>
     </properties>
 </project>
