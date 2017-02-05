@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>ru.mail.jira.plugins</groupId>
     <artifactId>uniqueregexfield</artifactId>
-    <version>1.2.3</version>
+    <version>1.2.5</version>
     <packaging>atlassian-plugin</packaging>
 
     <organization>
-        <name>Andrey Markelov</name>
+        <name>Andrey V Markelov</name>
         <url>http://ru.linkedin.com/in/andreymarkelov/</url>
     </organization>
 
@@ -61,8 +61,9 @@
     </build>
 
     <properties>
-        <jira.version>7.0.0</jira.version>
-        <amps.version>6.1.0</amps.version>
+        <jira.version>7.2.0</jira.version>
+        <jira.data.version>7.2.0</jira.data.version>
+        <amps.version>6.2.9</amps.version>
         <useFastdevCli>false</useFastdevCli>
     </properties>
 </project>

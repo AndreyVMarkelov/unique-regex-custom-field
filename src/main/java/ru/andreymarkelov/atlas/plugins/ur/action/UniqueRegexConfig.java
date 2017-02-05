@@ -1,19 +1,18 @@
 package ru.andreymarkelov.atlas.plugins.ur.action;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import ru.andreymarkelov.atlas.plugins.ur.field.UniqueRegexCF;
-import ru.andreymarkelov.atlas.plugins.ur.manager.UniqueRegexMgr;
-import ru.andreymarkelov.atlas.plugins.ur.model.CFData;
-import ru.andreymarkelov.atlas.plugins.ur.utils.UrUtils;
-
 import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.permission.GlobalPermissionKey;
 import com.atlassian.jira.security.GlobalPermissionManager;
 import com.atlassian.jira.security.JiraAuthenticationContext;
 import com.atlassian.jira.web.action.JiraWebActionSupport;
+import ru.andreymarkelov.atlas.plugins.ur.field.UniqueRegexCF;
+import ru.andreymarkelov.atlas.plugins.ur.manager.UniqueRegexMgr;
+import ru.andreymarkelov.atlas.plugins.ur.model.CFData;
+import ru.andreymarkelov.atlas.plugins.ur.utils.UrUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UniqueRegexConfig extends JiraWebActionSupport {
     private static final long serialVersionUID = 1381842671050861762L;

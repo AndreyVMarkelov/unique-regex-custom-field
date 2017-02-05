@@ -1,11 +1,5 @@
 package ru.andreymarkelov.atlas.plugins.ur.action;
 
-import java.util.List;
-
-import ru.andreymarkelov.atlas.plugins.ur.manager.UniqueRegexMgr;
-import ru.andreymarkelov.atlas.plugins.ur.model.CFData;
-import ru.andreymarkelov.atlas.plugins.ur.utils.UrUtils;
-
 import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.permission.GlobalPermissionKey;
@@ -13,6 +7,13 @@ import com.atlassian.jira.security.GlobalPermissionManager;
 import com.atlassian.jira.security.JiraAuthenticationContext;
 import com.atlassian.jira.security.xsrf.RequiresXsrfCheck;
 import com.atlassian.jira.web.action.JiraWebActionSupport;
+import ru.andreymarkelov.atlas.plugins.ur.manager.UniqueRegexMgr;
+import ru.andreymarkelov.atlas.plugins.ur.model.CFData;
+import ru.andreymarkelov.atlas.plugins.ur.utils.UrUtils;
+
+import java.util.List;
+
+import static org.apache.commons.lang3.StringUtils.trim;
 
 public class UniqueRegexFieldConfig extends JiraWebActionSupport {
     private static final long serialVersionUID = -727825112402972172L;
@@ -70,7 +71,7 @@ public class UniqueRegexFieldConfig extends JiraWebActionSupport {
         }
 
         urMgr.setCfJql(customFieldId, jqlclause);
-        urMgr.setCfRegex(customFieldId, regexclause);
+        urMgr.setCfRegex(customFieldId, trim(regexclause));
         urMgr.setCfRegexError(customFieldId, regexerror);
         urMgr.setCfTarget(customFieldId, targetcf);
         return getRedirect("UniqueRegexConfig!default.jspa?saved=true");

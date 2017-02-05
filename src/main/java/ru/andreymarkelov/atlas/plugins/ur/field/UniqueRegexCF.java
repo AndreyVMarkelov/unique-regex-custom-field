@@ -1,15 +1,5 @@
 package ru.andreymarkelov.atlas.plugins.ur.field;
 
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang3.math.NumberUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import com.atlassian.jira.bc.issue.search.SearchService;
 import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.Issue;
@@ -27,10 +17,20 @@ import com.atlassian.jira.security.JiraAuthenticationContext;
 import com.atlassian.jira.user.ApplicationUser;
 import com.atlassian.jira.util.ErrorCollection;
 import com.atlassian.jira.web.bean.PagerFilter;
-
+import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import ru.andreymarkelov.atlas.plugins.ur.manager.UniqueRegexMgr;
 import ru.andreymarkelov.atlas.plugins.ur.model.CFData;
 import webwork.action.ActionContext;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static org.apache.commons.lang3.StringUtils.isNoneBlank;
+import static org.apache.commons.lang3.StringUtils.trim;
 
 public class UniqueRegexCF extends GenericTextCFType {
     private static Log log = LogFactory.getLog(UniqueRegexCF.class);
@@ -88,20 +88,20 @@ public class UniqueRegexCF extends GenericTextCFType {
     public void validateFromParams(CustomFieldParams relevantParams, ErrorCollection errorCollectionToAddTo, FieldConfig config) {
         String cfVal;
         try {
-            cfVal = (String) getValueFromCustomFieldParams(relevantParams);
+            cfVal = getValueFromCustomFieldParams(relevantParams);
         } catch (FieldValidationException e) {
             errorCollectionToAddTo.addError(config.getCustomField().getId(), e.getMessage());
             return;
         }
 
-        if (cfVal != null && cfVal.length() > 0) {
+        if (isNoneBlank(cfVal)) {
             CustomField cf = config.getCustomField();
             CFData cfData = urMgr.getCFData(cf.getId());
-            if (cfData.getRegex() != null && cfData.getRegex().length() > 0) {
+            if (isNoneBlank(cfData.getRegex())) {
                 Pattern pattern = Pattern.compile(cfData.getRegex());
-                Matcher m = pattern.matcher(cfVal);
+                Matcher m = pattern.matcher(trim(cfVal));
                 if (!m.matches()) {
-                    if (cfData.getRegexError() != null && cfData.getRegexError().length() > 0) {
+                    if (isNoneBlank(cfData.getRegexError())) {
                         errorCollectionToAddTo.addError(config.getCustomField().getId(), cfData.getRegexError());
                     } else {
                         errorCollectionToAddTo.addError( config.getCustomField().getId(), getI18nBean().getText("uniqueregex.matcherror", cfVal, cfData.getRegex()));
