@@ -2,17 +2,18 @@ package ru.andreymarkelov.atlas.plugins.ur.action;
 
 import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.fields.CustomField;
-import com.atlassian.jira.permission.GlobalPermissionKey;
 import com.atlassian.jira.security.GlobalPermissionManager;
 import com.atlassian.jira.security.JiraAuthenticationContext;
 import com.atlassian.jira.security.xsrf.RequiresXsrfCheck;
 import com.atlassian.jira.web.action.JiraWebActionSupport;
+import org.apache.commons.lang3.StringUtils;
 import ru.andreymarkelov.atlas.plugins.ur.manager.UniqueRegexMgr;
 import ru.andreymarkelov.atlas.plugins.ur.model.CFData;
 import ru.andreymarkelov.atlas.plugins.ur.utils.UrUtils;
 
 import java.util.List;
 
+import static com.atlassian.jira.permission.GlobalPermissionKey.ADMINISTER;
 import static org.apache.commons.lang3.StringUtils.trim;
 
 public class UniqueRegexFieldConfig extends JiraWebActionSupport {
@@ -99,7 +100,7 @@ public class UniqueRegexFieldConfig extends JiraWebActionSupport {
     }
 
     public String getDefaultTarget() {
-        if (UrUtils.isEmpty(targetcf)) {
+        if (StringUtils.isBlank(targetcf)) {
             return customFieldId;
         } else {
             return targetcf;
@@ -127,10 +128,7 @@ public class UniqueRegexFieldConfig extends JiraWebActionSupport {
     }
 
     public boolean hasAdminPermission() {
-        if (globalPermissionManager.hasPermission(GlobalPermissionKey.ADMINISTER, getLoggedInApplicationUser())) {
-            return true;
-        }
-        return false;
+        return globalPermissionManager.hasPermission(ADMINISTER, getLoggedInUser());
     }
 
     public void setCustomFieldId(String customFieldId) {

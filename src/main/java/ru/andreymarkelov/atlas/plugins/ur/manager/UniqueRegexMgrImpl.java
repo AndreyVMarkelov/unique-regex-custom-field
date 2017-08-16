@@ -1,8 +1,7 @@
 package ru.andreymarkelov.atlas.plugins.ur.manager;
 
-import ru.andreymarkelov.atlas.plugins.ur.model.CFData;
-
 import com.atlassian.sal.api.pluginsettings.PluginSettingsFactory;
+import ru.andreymarkelov.atlas.plugins.ur.model.CFData;
 
 public class UniqueRegexMgrImpl implements UniqueRegexMgr {
     private static final String PLUGIN_KEY = "UNIQUE_REGEX_CF";
@@ -15,7 +14,13 @@ public class UniqueRegexMgrImpl implements UniqueRegexMgr {
 
     @Override
     public CFData getCFData(String cfKey) {
-        return new CFData(getStringProperty(cfKey + ".regex"), getStringProperty(cfKey + ".regexerror"), getStringProperty(cfKey + ".jql"), getStringProperty(cfKey + ".target"));
+        return new CFData(
+                getStringProperty(cfKey + ".regex"),
+                getStringProperty(cfKey + ".regexerror"),
+                getStringProperty(cfKey + ".jql"),
+                getStringProperty(cfKey + ".uniqueerror"),
+                getStringProperty(cfKey + ".target")
+        );
     }
 
     private synchronized String getStringProperty(String key) {
@@ -35,6 +40,11 @@ public class UniqueRegexMgrImpl implements UniqueRegexMgr {
     @Override
     public void setCfRegexError(String cfKey, String regexError) {
         setStringProperty(cfKey + ".regexerror", regexError);
+    }
+
+    @Override
+    public void setUniqueError(String cfKey, String uniqueError) {
+        setStringProperty(cfKey + ".uniqueerror", uniqueError);
     }
 
     @Override

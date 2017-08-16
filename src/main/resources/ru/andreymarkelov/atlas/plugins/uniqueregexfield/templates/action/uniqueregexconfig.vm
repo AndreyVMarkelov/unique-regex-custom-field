@@ -29,6 +29,7 @@
                                     <th id="regex">$action.getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.field.regex")</th>
                                     <th id="regexerror">$action.getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.field.regexerror")</th>
                                     <th id="jql">$action.getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.field.jql")</th>
+                                    <th id="jql">$action.getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.field.jqlerror")</th>
                                     <th id="targetfield">$action.getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.field.targetfield")</th>
                                     <th id="actions">$action.getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.field.actions")</th>
                                 </tr>
@@ -41,6 +42,7 @@
                                     <td headers="regex">$!data.getRegex()</td>
                                     <td headers="regexerror">$!data.getRegexError()</td>
                                     <td headers="jql">$!data.getJql()</td>
+                                    <td headers="jql">$!data.getUniqueError()</td>
                                     <td headers="targetfield">$!data.getTargetCfName()</td>
                                     <td headers="actions">
                                         <a href="UniqueRegexFieldConfig!default.jspa?customFieldId=$data.getCfKey()">$action.getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.field.action.configure")</a>

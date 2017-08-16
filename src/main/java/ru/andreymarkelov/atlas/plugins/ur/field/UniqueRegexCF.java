@@ -114,13 +114,13 @@ public class UniqueRegexCF extends GenericTextCFType {
                 ApplicationUser user = authenticationContext.getLoggedInUser();
                 SearchService.ParseResult parseResult = searchService.parseQuery(user, cfData.getJql());
                 if (parseResult.isValid()) {
-                    CustomField tCf = cfMgr.getCustomFieldObject(cfData.getTargetCf());
-                    if (tCf != null) {
+                    CustomField customField = cfMgr.getCustomFieldObject(cfData.getTargetCf());
+                    if (customField != null) {
                         try {
                             SearchResults results = searchService.search(user, parseResult.getQuery(), PagerFilter.getUnlimitedFilter());
                             List<Issue> issues = results.getIssues();
                             for (Issue i : issues) {
-                                Object tVal = i.getCustomFieldValue(tCf);
+                                Object tVal = i.getCustomFieldValue(customField);
                                 boolean isSameIssue = false;
                                 Long currIssueId = getIssueId(relevantParams);
                                 if (currIssueId >= 0) {
@@ -135,7 +135,7 @@ public class UniqueRegexCF extends GenericTextCFType {
                                 }
                             }
                         } catch (SearchException e) {
-                            log.error("UniqueRegexCF::validateFromParams - Search error");
+                            log.error("UniqueRegexCF::validateFromParams - Search error", e);
                         }
                     }
                 }

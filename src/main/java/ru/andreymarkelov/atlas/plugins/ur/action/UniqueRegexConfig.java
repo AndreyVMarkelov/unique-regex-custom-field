@@ -2,7 +2,6 @@ package ru.andreymarkelov.atlas.plugins.ur.action;
 
 import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.fields.CustomField;
-import com.atlassian.jira.permission.GlobalPermissionKey;
 import com.atlassian.jira.security.GlobalPermissionManager;
 import com.atlassian.jira.security.JiraAuthenticationContext;
 import com.atlassian.jira.web.action.JiraWebActionSupport;
@@ -13,6 +12,8 @@ import ru.andreymarkelov.atlas.plugins.ur.utils.UrUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.atlassian.jira.permission.GlobalPermissionKey.ADMINISTER;
 
 public class UniqueRegexConfig extends JiraWebActionSupport {
     private static final long serialVersionUID = 1381842671050861762L;
@@ -137,10 +138,7 @@ public class UniqueRegexConfig extends JiraWebActionSupport {
     }
 
     public boolean hasAdminPermission() {
-        if (globalPermissionManager.hasPermission(GlobalPermissionKey.ADMINISTER, getLoggedInApplicationUser())) {
-            return true;
-        }
-        return false;
+        return globalPermissionManager.hasPermission(ADMINISTER, getLoggedInUser());
     }
 
     public void setCustomFieldId(String customFieldId) {
