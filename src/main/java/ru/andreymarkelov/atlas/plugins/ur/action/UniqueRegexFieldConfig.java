@@ -6,7 +6,6 @@ import com.atlassian.jira.security.GlobalPermissionManager;
 import com.atlassian.jira.security.JiraAuthenticationContext;
 import com.atlassian.jira.security.xsrf.RequiresXsrfCheck;
 import com.atlassian.jira.web.action.JiraWebActionSupport;
-import org.apache.commons.lang3.StringUtils;
 import ru.andreymarkelov.atlas.plugins.ur.manager.UniqueRegexMgr;
 import ru.andreymarkelov.atlas.plugins.ur.model.CFData;
 import ru.andreymarkelov.atlas.plugins.ur.utils.UrUtils;
@@ -14,6 +13,7 @@ import ru.andreymarkelov.atlas.plugins.ur.utils.UrUtils;
 import java.util.List;
 
 import static com.atlassian.jira.permission.GlobalPermissionKey.ADMINISTER;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.trim;
 
 public class UniqueRegexFieldConfig extends JiraWebActionSupport {
@@ -27,6 +27,7 @@ public class UniqueRegexFieldConfig extends JiraWebActionSupport {
     private String customFieldId;
     private String regexclause;
     private String regexerror;
+    private String jqlError;
     private String jqlclause;
     private String targetcf;
 
@@ -43,7 +44,7 @@ public class UniqueRegexFieldConfig extends JiraWebActionSupport {
 
     @Override
     public String doDefault() throws Exception {
-        if (!hasAdminPermission()) {
+        if (!globalPermissionManager.hasPermission(ADMINISTER, getLoggedInUser())) {
             return PERMISSION_VIOLATION_RESULT;
         }
 
@@ -58,6 +59,7 @@ public class UniqueRegexFieldConfig extends JiraWebActionSupport {
 
         CFData data = urMgr.getCFData(customFieldId);
         jqlclause = data.getJql();
+        jqlError = data.getUniqueError();
         regexclause = data.getRegex();
         regexerror = data.getRegexError();
         targetcf = data.getTargetCf();
@@ -67,11 +69,12 @@ public class UniqueRegexFieldConfig extends JiraWebActionSupport {
     @Override
     @RequiresXsrfCheck
     protected String doExecute() throws Exception {
-        if (!hasAdminPermission()) {
+        if (!globalPermissionManager.hasPermission(ADMINISTER, getLoggedInUser())) {
             return PERMISSION_VIOLATION_RESULT;
         }
 
         urMgr.setCfJql(customFieldId, jqlclause);
+        urMgr.setUniqueError(customFieldId, jqlError);
         urMgr.setCfRegex(customFieldId, trim(regexclause));
         urMgr.setCfRegexError(customFieldId, regexerror);
         urMgr.setCfTarget(customFieldId, targetcf);
@@ -100,11 +103,7 @@ public class UniqueRegexFieldConfig extends JiraWebActionSupport {
     }
 
     public String getDefaultTarget() {
-        if (StringUtils.isBlank(targetcf)) {
-            return customFieldId;
-        } else {
-            return targetcf;
-        }
+        return isBlank(targetcf) ? customFieldId : targetcf;
     }
 
     public String getJqlclause() {
@@ -127,10 +126,6 @@ public class UniqueRegexFieldConfig extends JiraWebActionSupport {
         return authenticationContext.getI18nHelper().getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.field.title", UrUtils.getCfName(cfMgr, customFieldId));
     }
 
-    public boolean hasAdminPermission() {
-        return globalPermissionManager.hasPermission(ADMINISTER, getLoggedInUser());
-    }
-
     public void setCustomFieldId(String customFieldId) {
         this.customFieldId = customFieldId;
     }
@@ -149,5 +144,13 @@ public class UniqueRegexFieldConfig extends JiraWebActionSupport {
 
     public void setTargetcf(String targetcf) {
         this.targetcf = targetcf;
+    }
+
+    public String getJqlError() {
+        return jqlError;
+    }
+
+    public void setJqlError(String jqlError) {
+        this.jqlError = jqlError;
     }
 }

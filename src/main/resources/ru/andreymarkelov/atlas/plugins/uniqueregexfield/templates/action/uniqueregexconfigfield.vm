@@ -33,14 +33,26 @@
                             <div class="field-group">
                                 <label for="regexerror">$i18n.getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.field.regexerror")</label>
                                 <textarea class="textarea" rows="5" cols="30" id="regexerror" name="regexerror">$!regexerror</textarea>
-                                #if($action.getErrors().containsKey("regexerror"))<div class="error">$action.getErrors().get("regexerror")</div>#end
+                                #if($action.getErrors().containsKey("regexerror"))
+                                <div class="error">$action.getErrors().get("regexerror")</div>
+                                #end
                                 <div class="description">$i18n.getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.field.regexerror.desc")</div>
                             </div>
                             <div class="field-group">
                                 <label for="jqlclause">$i18n.getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.field.jql")</label>
-                                <textarea class="textarea" rows="5" cols="30" id="jqlclause" name="jqlclause">$!jqlclause</textarea>
-                                #if($action.getErrors().containsKey("jqlclause"))<div class="error">$action.getErrors().get("jqlclause")</div>#end
+                                <textarea class="textarea" rows="5" cols="30" id="jqlclause" name="jqlclause">$!{jqlclause}</textarea>
+                                #if($action.getErrors().containsKey("jqlclause"))
+                                <div class="error">$action.getErrors().get("jqlclause")</div>
+                                #end
                                 <div class="description">$i18n.getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.field.jql.desc")</div>
+                            </div>
+                            <div class="field-group">
+                                <label for="jqlError">$i18n.getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.field.jqlerror")</label>
+                                <textarea class="textarea" rows="5" cols="30" id="jqlError" name="jqlError">$!{jqlError}</textarea>
+                                #if($action.getErrors().containsKey("jqlError"))
+                                <div class="error">$action.getErrors().get("jqlError")</div>
+                                #end
+                                <div class="description">$i18n.getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.field.jqlerror.desc")</div>
                             </div>
                             <div class="field-group">
                                 <label for="targetcf">$i18n.getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.field.targetfield")</label>
@@ -49,7 +61,9 @@
                                     <option #if($cf.getId() == $action.getDefaultTarget())selected="selected"#end value="$cf.getId()">$cf.getName()</option>
                                 #end
                                 </select>
-                                #if($action.getErrors().containsKey("targetcf"))<div class="error">$action.getErrors().get("targetcf")</div>#end
+                                #if($action.getErrors().containsKey("targetcf"))
+                                <div class="error">$action.getErrors().get("targetcf")</div>
+                                #end
                                 <div class="description">$i18n.getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.field.targetfield.desc")</div>
                             </div>
                             <div class="buttons-container">

@@ -1,6 +1,7 @@
 package ru.andreymarkelov.atlas.plugins.ur.field;
 
 import com.atlassian.jira.bc.issue.search.SearchService;
+import com.atlassian.jira.imports.project.customfield.ProjectImportableCustomField;
 import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.customfields.impl.FieldValidationException;
@@ -29,10 +30,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.apache.commons.lang3.StringUtils.isNoneBlank;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.trim;
 
-public class UniqueRegexCF extends GenericTextCFType {
+public class UniqueRegexCF extends GenericTextCFType implements ProjectImportableCustomField {
     private static Log log = LogFactory.getLog(UniqueRegexCF.class);
 
     private final CustomFieldManager cfMgr;
@@ -94,14 +95,14 @@ public class UniqueRegexCF extends GenericTextCFType {
             return;
         }
 
-        if (isNoneBlank(cfVal)) {
+        if (isNotBlank(cfVal)) {
             CustomField cf = config.getCustomField();
             CFData cfData = urMgr.getCFData(cf.getId());
-            if (isNoneBlank(cfData.getRegex())) {
+            if (isNotBlank(cfData.getRegex())) {
                 Pattern pattern = Pattern.compile(cfData.getRegex());
                 Matcher m = pattern.matcher(trim(cfVal));
                 if (!m.matches()) {
-                    if (isNoneBlank(cfData.getRegexError())) {
+                    if (isNotBlank(cfData.getRegexError())) {
                         errorCollectionToAddTo.addError(config.getCustomField().getId(), cfData.getRegexError());
                     } else {
                         errorCollectionToAddTo.addError( config.getCustomField().getId(), getI18nBean().getText("uniqueregex.matcherror", cfVal, cfData.getRegex()));
@@ -130,7 +131,11 @@ public class UniqueRegexCF extends GenericTextCFType {
                                 }
 
                                 if (tVal != null && tVal.toString().equals(cfVal) && !isSameIssue) {
-                                    errorCollectionToAddTo.addError(config.getCustomField().getId(), getI18nBean().getText("uniqueregex.unique", cfData.getJql()));
+                                    if (isNotBlank(cfData.getUniqueError())) {
+                                        errorCollectionToAddTo.addError(config.getCustomField().getId(), cfData.getUniqueError());
+                                    } else {
+                                        errorCollectionToAddTo.addError(config.getCustomField().getId(), getI18nBean().getText("uniqueregex.unique", cfData.getJql()));
+                                    }
                                     return;
                                 }
                             }

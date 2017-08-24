@@ -25,12 +25,16 @@
     </customfield-type>
 
     <!-- Custom Field Searchers -->
-    <customfield-searcher key="mailru-select-searcher" name="Unique regex custom field searcher"
-                          i18n-name-key="uniqueregex.admin.seacrher" class="ru.andreymarkelov.atlas.plugins.ur.field.UrSearcher">
-        <description>Allow searching for unique regex custom field.</description>
-        <resource type="velocity" name="label" location="/ru/andreymarkelov/atlas/plugins/uniqueregexfield/templates/field/label-uniqueregex.vm"/>
-        <resource type="velocity" name="search" location="/ru/andreymarkelov/atlas/plugins/uniqueregexfield/templates/field/search-uniqueregex.vm"/>
-        <resource type="velocity" name="view" location="/ru/andreymarkelov/atlas/plugins/uniqueregexfield/templates/field/view-search-uniqueregex.vm"/>
+    <customfield-searcher key="mailru-select-searcher" name="Exact Text Searcher" i18n-name-key="admin.customfield.searcher.exacttextsearcher.name" class="com.atlassian.jira.issue.customfields.searchers.ExactTextSearcher">
+        <description key="admin.customfield.searcher.exacttextsearcher.desc">Search for values exactly matching the input</description>
+        <resource type="velocity" name="search" location="templates/plugins/fields/edit-searcher/search-basictext.vm"/>
+        <resource type="velocity" name="view" location="templates/plugins/fields/view-searcher/view-searcher-basictext.vm"/>
+        <valid-customfield-type package="${project.groupId}.${project.artifactId}" key="unique-regex-cf"/>
+    </customfield-searcher>
+    <customfield-searcher key="unique-regex-cf-textsearcher" name="Free Text Searcher" i18n-name-key="admin.customfield.searcher.textsearcher.name" class="com.atlassian.jira.issue.customfields.searchers.TextSearcher">
+        <description key="admin.customfield.searcher.textsearcher.desc">Search for values using a free text search.</description>
+        <resource type="velocity" name="search" location="templates/plugins/fields/edit-searcher/search-basictext.vm"/>
+        <resource type="velocity" name="view" location="templates/plugins/fields/view-searcher/view-searcher-basictext.vm"/>
         <valid-customfield-type package="${project.groupId}.${project.artifactId}" key="unique-regex-cf"/>
     </customfield-searcher>
 
