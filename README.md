@@ -1,4 +1,3 @@
-mailru-jira-plugins-unique-regex-cf
-===================================
+# Unique Regex Custom Field
 
-Unique Regex Custom Field JIra Add-On
+Custom field that based on text field and allows to match "regular expression" and/or check uniqueness of custom field from JQL.
