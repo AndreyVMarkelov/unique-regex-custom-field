@@ -63,6 +63,11 @@
                 <view name="success">/ru/andreymarkelov/atlas/plugins/uniqueregexfield/templates/action/uniqueregexconfigfield.vm</view>
                 <view name="permissionviolation">/secure/views/permissionviolation.jsp</view>
             </action>
+            <action name="ru.andreymarkelov.atlas.plugins.ur.action.UniqueRegexTester" alias="UniqueRegexTester">
+                <view name="input">/ru/andreymarkelov/atlas/plugins/uniqueregexfield/templates/action/uniqueregextester.vm.vm</view>
+                <view name="success">/ru/andreymarkelov/atlas/plugins/uniqueregexfield/templates/action/uniqueregextester.vm.vm</view>
+                <view name="permissionviolation">/secure/views/permissionviolation.jsp</view>
+            </action>
         </actions>
     </webwork1>
 
