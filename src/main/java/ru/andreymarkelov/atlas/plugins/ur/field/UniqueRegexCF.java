@@ -131,7 +131,7 @@ public class UniqueRegexCF extends GenericTextCFType implements ProjectImportabl
                     if (customField != null) {
                         try {
                             SearchResults results = searchService.search(user, parseResult.getQuery(), PagerFilter.getUnlimitedFilter());
-                            List<Issue> issues = results.getResults();
+                            List<Issue> issues = results.getIssues();
                             for (Issue i : issues) {
                                 Object tVal = i.getCustomFieldValue(customField);
                                 boolean isSameIssue = false;
