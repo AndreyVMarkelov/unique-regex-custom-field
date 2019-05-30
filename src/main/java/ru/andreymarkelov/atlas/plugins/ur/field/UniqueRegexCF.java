@@ -57,7 +57,15 @@ public class UniqueRegexCF extends GenericTextCFType implements ProjectImportabl
         this.authenticationContext = authenticationContext;
     }
 
-    private Long getIssueId(CustomFieldParams relevantParams) {
+    private boolean isInIssueContext(CustomFieldParams relevantParams) {
+        if (relevantParams.containsKey("com.atlassian.jira.internal.issue_id")
+                || relevantParams.containsKey("com.atlassian.jira.internal.project_id")) {
+            return true;
+        }
+        return false;
+    }
+
+    private long getIssueId(CustomFieldParams relevantParams) {
         if (relevantParams.containsKey("com.atlassian.jira.internal.issue_id")) {
             Object obj = relevantParams.getFirstValueForKey("com.atlassian.jira.internal.issue_id");
             if (obj != null) {
@@ -87,6 +95,10 @@ public class UniqueRegexCF extends GenericTextCFType implements ProjectImportabl
     }
 
     public void validateFromParams(CustomFieldParams relevantParams, ErrorCollection errorCollectionToAddTo, FieldConfig config) {
+        if (!isInIssueContext(relevantParams)) {
+            return;
+        }
+
         String cfVal;
         try {
             cfVal = getValueFromCustomFieldParams(relevantParams);
