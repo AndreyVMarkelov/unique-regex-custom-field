@@ -1,0 +1,72 @@
+<html>
+<head>
+    <title>$i18n.getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.tester.title")</title>
+    <meta content="admin" name="decorator"/>
+    <meta content="admin_plugins_menu/unique-regex-configuration-section" name="admin.active.section"/>
+    <meta content="unique-regex-tester-action" name="admin.active.tab"/>
+    $webResourceManager.requireResource("jira.webresources:global-static")
+    $webResourceManager.requireResource("jira.webresources:jira-global")
+    $webResourceManager.requireResource("com.atlassian.auiplugin:ajs")
+</head>
+<body class="aui">
+<section id="content" role="main">
+    <header class="aui-page-header">
+        <div class="aui-page-header-inner">
+            <div class="aui-page-header-main">
+                <h1>$i18n.getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.tester.title")</h1>
+                <p>$i18n.getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.tester.desc")</p>
+            </div>
+        </div>
+    </header>
+    <div class="aui-page-panel">
+        <div class="aui-page-panel-inner">
+            <section class="aui-page-panel-content">
+                #if($action.hasAnyErrors())
+                <div class="aui-message aui-message-error">
+                    <p class="title">
+                        <span class="aui-icon icon-error"></span>
+                        <strong>$i18n.getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.tester.error")</strong>
+                    </p>
+                    #foreach($error in $action.getErrorMessages())
+                    <p>${error}</p>
+                    #end
+                </div>
+                #end
+                #if(${matched} != "NOTSET")
+                <div class="aui-message">
+                    <p class="title">
+                        <span class="aui-icon icon-generic"></span>
+                        <strong>$!{matched}</strong>
+                    </p>
+                </div>
+                #end
+                <form action="RegexTesterAction.jspa" method="post" class="aui">
+                    <input type="hidden" name="atl_token" value="${atl_token}"/>
+                    <div class="field-group">
+                        <label for="regex">$i18n.getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.tester.regex")</label>
+                        <input class="text" type="text" id="regex" name="regex" value="$!{regex}"/>
+                        #if($action.getErrors().containsKey("regex"))
+                            <div class="error">$action.getErrors().get("regex")</div>
+                        #end
+                        <div class="description">$i18n.getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.tester.regex.desc")</div>
+                    </div>
+                    <div class="field-group">
+                        <label for="expression">$i18n.getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.tester.teststring")</label>
+                        <input class="text" type="text" id="expression" name="expression" value="$!{expression}"/>
+                        #if($action.getErrors().containsKey("expression"))
+                            <div class="error">$action.getErrors().get("expression")</div>
+                        #end
+                        <div class="description">$i18n.getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.tester.teststring.desc")</div>
+                    </div>
+                    <div class="buttons-container">
+                        <div class="buttons">
+                            <input class="button submit" type="submit" value='$i18n.getText("ru.andreymarkelov.atlas.plugins.uniqueregexfield.tester.test")'/>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</section>
+</body>
+</html>

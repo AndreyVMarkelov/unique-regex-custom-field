@@ -48,6 +48,12 @@
         <condition class="com.atlassian.jira.plugin.webfragment.conditions.JiraGlobalPermissionCondition"><param name="permission">admin</param></condition>
         <link linkId="unique-regex-configuration-settings">/secure/UniqueRegexConfig!default.jspa</link>
     </web-item>
+    <web-item key="unique-regex-tester-action" name="Regex Tester" section="admin_plugins_menu/unique-regex-configuration-section" weight="95">
+        <label key="ru.andreymarkelov.atlas.plugins.uniqueregexfield.tester.title">Regex Tester</label>
+        <description key="ru.andreymarkelov.atlas.plugins.uniqueregexfield.settings.desc">On this page you can test Regex expression for fields.</description>
+        <condition class="com.atlassian.jira.plugin.webfragment.conditions.JiraGlobalPermissionCondition"><param name="permission">admin</param></condition>
+        <link linkId="unique-regex-tester-action">/secure/RegexTesterAction!default.jspa</link>
+    </web-item>
 
     <!-- WebWork1 -->
     <webwork1 key="unique_regex_action" name="Unique regex fields configure action" class="java.lang.Object">
@@ -63,9 +69,9 @@
                 <view name="success">/ru/andreymarkelov/atlas/plugins/uniqueregexfield/templates/action/uniqueregexconfigfield.vm</view>
                 <view name="permissionviolation">/secure/views/permissionviolation.jsp</view>
             </action>
-            <action name="ru.andreymarkelov.atlas.plugins.ur.action.UniqueRegexTester" alias="UniqueRegexTester">
-                <view name="input">/ru/andreymarkelov/atlas/plugins/uniqueregexfield/templates/action/uniqueregextester.vm.vm</view>
-                <view name="success">/ru/andreymarkelov/atlas/plugins/uniqueregexfield/templates/action/uniqueregextester.vm.vm</view>
+            <action name="ru.andreymarkelov.atlas.plugins.ur.action.admin.RegexTesterAction" alias="RegexTesterAction">
+                <view name="input">/ru/andreymarkelov/atlas/plugins/uniqueregexfield/templates/action/admin/uniqueregextester.vm</view>
+                <view name="success">/ru/andreymarkelov/atlas/plugins/uniqueregexfield/templates/action/admin/uniqueregextester.vm</view>
                 <view name="permissionviolation">/secure/views/permissionviolation.jsp</view>
             </action>
         </actions>
