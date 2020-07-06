@@ -58,11 +58,8 @@ public class UniqueRegexCF extends GenericTextCFType implements ProjectImportabl
     }
 
     private boolean isInIssueContext(CustomFieldParams relevantParams) {
-        if (relevantParams.containsKey("com.atlassian.jira.internal.issue_id")
-                || relevantParams.containsKey("com.atlassian.jira.internal.project_id")) {
-            return true;
-        }
-        return false;
+        return relevantParams.containsKey("com.atlassian.jira.internal.issue_id")
+                || relevantParams.containsKey("com.atlassian.jira.internal.project_id");
     }
 
     private long getIssueId(CustomFieldParams relevantParams) {
@@ -87,7 +84,7 @@ public class UniqueRegexCF extends GenericTextCFType implements ProjectImportabl
             return -1L;
         } else {
             try {
-                return Long.valueOf(issueIdStr[0]);
+                return Long.parseLong(issueIdStr[0]);
             } catch (Exception ex) {
                 return -1L;
             }
@@ -130,12 +127,12 @@ public class UniqueRegexCF extends GenericTextCFType implements ProjectImportabl
                     CustomField customField = cfMgr.getCustomFieldObject(cfData.getTargetCf());
                     if (customField != null) {
                         try {
-                            SearchResults results = searchService.search(user, parseResult.getQuery(), PagerFilter.getUnlimitedFilter());
+                            SearchResults<Issue> results = searchService.search(user, parseResult.getQuery(), PagerFilter.getUnlimitedFilter());
                             List<Issue> issues = results.getResults();
                             for (Issue i : issues) {
                                 Object tVal = i.getCustomFieldValue(customField);
                                 boolean isSameIssue = false;
-                                Long currIssueId = getIssueId(relevantParams);
+                                long currIssueId = getIssueId(relevantParams);
                                 if (currIssueId >= 0) {
                                     if (i.getId().equals(currIssueId)) {
                                         isSameIssue = true;

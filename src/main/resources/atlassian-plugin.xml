@@ -74,12 +74,26 @@
                 <view name="success">/ru/andreymarkelov/atlas/plugins/uniqueregexfield/templates/action/admin/uniqueregextester.vm</view>
                 <view name="permissionviolation">/secure/views/permissionviolation.jsp</view>
             </action>
+            <action name="ru.andreymarkelov.atlas.plugins.ur.action.field.UniqueRegexCFRegexConfigAction" alias="UniqueRegexCFRegexConfigAction">
+                <view name="success">/ru/andreymarkelov/atlas/plugins/uniqueregexfield/templates/action/field/regexconfig.vm</view>
+                <view name="permissionviolation">/secure/views/permissionviolation.jsp</view>
+            </action>
+            <action name="ru.andreymarkelov.atlas.plugins.ur.action.field.UniqueRegexCFUniqueConfigAction" alias="UniqueRegexCFUniqueConfigAction">
+                <view name="success">/ru/andreymarkelov/atlas/plugins/uniqueregexfield/templates/action/field/uniqueconfig.vm</view>
+                <view name="permissionviolation">/secure/views/permissionviolation.jsp</view>
+            </action>
         </actions>
     </webwork1>
 
     <!-- Components -->
     <component key="unique-regex-manager" name="Manager of unique regex fields" class="ru.andreymarkelov.atlas.plugins.ur.manager.UniqueRegexMgrImpl">
         <interface>ru.andreymarkelov.atlas.plugins.ur.manager.UniqueRegexMgr</interface>
+    </component>
+    <component key="unique-regex-regex-settings-manager" class="ru.andreymarkelov.atlas.plugins.ur.manager.impl.RegexSettingsManagerImpl" public="true">
+        <interface>ru.andreymarkelov.atlas.plugins.ur.manager.RegexSettingsManager</interface>
+    </component>
+    <component key="unique-regex-unique-settings-manager" class="ru.andreymarkelov.atlas.plugins.ur.manager.impl.UniqueSettingsManagerImpl" public="true">
+        <interface>ru.andreymarkelov.atlas.plugins.ur.manager.UniqueSettingsManager</interface>
     </component>
     <component-import key="pluginSettingsFactory">
         <interface>com.atlassian.sal.api.pluginsettings.PluginSettingsFactory</interface>
