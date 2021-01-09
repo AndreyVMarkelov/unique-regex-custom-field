@@ -31,4 +31,7 @@ Build and deploy application. JIRA server will be with development license, bind
 Start Jira server with plugin in docker container. The container will automatically deploy the JIRA server, this may take 10 minutes.
 
 1. Download image: 'docker pull andrewdvizhok/demo-jira:1.0'
-2. Run container: 'docker run -t -p 2990:80 -i andrewdvizhok/demo-jira:1.0'
+2. Run container: 'docker run -t -p 2990:80 -i andrewdvizhok/demo-jira:1.0 /bin/bash'
+3. In the docker go to directory /unique-regex-custom-field
+4. Run command to start jira server: 'atlas-run -u 6.3.21 -p 80'
+5. Run command to build plugin: 'atlas-package'
