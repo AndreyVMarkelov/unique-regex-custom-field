@@ -1,18 +1,20 @@
 package ru.andreymarkelov.atlas.plugins.ur.action;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.security.GlobalPermissionManager;
 import com.atlassian.jira.security.JiraAuthenticationContext;
+import com.atlassian.jira.security.request.RequestMethod;
+import com.atlassian.jira.security.request.SupportedMethods;
 import com.atlassian.jira.security.xsrf.RequiresXsrfCheck;
 import com.atlassian.jira.web.action.JiraWebActionSupport;
 import ru.andreymarkelov.atlas.plugins.ur.field.UniqueRegexCF;
 import ru.andreymarkelov.atlas.plugins.ur.manager.UniqueRegexMgr;
 import ru.andreymarkelov.atlas.plugins.ur.model.CFData;
 import ru.andreymarkelov.atlas.plugins.ur.utils.UrUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.atlassian.jira.permission.GlobalPermissionKey.ADMINISTER;
 
@@ -43,6 +45,7 @@ public class UniqueRegexConfig extends JiraWebActionSupport {
     }
 
     @Override
+    @SupportedMethods({RequestMethod.GET})
     public String doDefault() {
         if (!hasAdminPermission()) {
             return PERMISSION_VIOLATION_RESULT;
@@ -62,6 +65,7 @@ public class UniqueRegexConfig extends JiraWebActionSupport {
         return SUCCESS;
     }
 
+    @SupportedMethods({RequestMethod.POST})
     public String doEdit() {
         if (!hasAdminPermission()) {
             return PERMISSION_VIOLATION_RESULT;

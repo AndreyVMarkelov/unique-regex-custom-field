@@ -4,6 +4,8 @@ import com.atlassian.jira.issue.CustomFieldManager;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.security.GlobalPermissionManager;
 import com.atlassian.jira.security.JiraAuthenticationContext;
+import com.atlassian.jira.security.request.RequestMethod;
+import com.atlassian.jira.security.request.SupportedMethods;
 import com.atlassian.jira.security.xsrf.RequiresXsrfCheck;
 import com.atlassian.jira.web.action.JiraWebActionSupport;
 import ru.andreymarkelov.atlas.plugins.ur.manager.UniqueRegexMgr;
@@ -43,7 +45,8 @@ public class UniqueRegexFieldConfig extends JiraWebActionSupport {
     }
 
     @Override
-    public String doDefault() throws Exception {
+    @SupportedMethods({RequestMethod.GET})
+    public String doDefault() {
         if (!globalPermissionManager.hasPermission(ADMINISTER, getLoggedInUser())) {
             return PERMISSION_VIOLATION_RESULT;
         }
@@ -67,8 +70,9 @@ public class UniqueRegexFieldConfig extends JiraWebActionSupport {
     }
 
     @Override
+    @SupportedMethods({RequestMethod.POST})
     @RequiresXsrfCheck
-    protected String doExecute() throws Exception {
+    protected String doExecute() {
         if (!globalPermissionManager.hasPermission(ADMINISTER, getLoggedInUser())) {
             return PERMISSION_VIOLATION_RESULT;
         }

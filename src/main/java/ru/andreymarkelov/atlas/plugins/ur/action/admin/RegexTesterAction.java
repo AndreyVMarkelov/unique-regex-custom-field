@@ -1,5 +1,7 @@
 package ru.andreymarkelov.atlas.plugins.ur.action.admin;
 
+import com.atlassian.jira.security.request.RequestMethod;
+import com.atlassian.jira.security.request.SupportedMethods;
 import com.atlassian.jira.security.xsrf.RequiresXsrfCheck;
 import com.atlassian.jira.web.action.JiraWebActionSupport;
 
@@ -15,6 +17,7 @@ public class RegexTesterAction extends JiraWebActionSupport {
     private String matched;
 
     @Override
+    @SupportedMethods({RequestMethod.GET})
     public String doDefault() {
         if (!hasAdminPermission()) {
             return PERMISSION_VIOLATION_RESULT;
@@ -24,6 +27,7 @@ public class RegexTesterAction extends JiraWebActionSupport {
     }
 
     @Override
+    @SupportedMethods({RequestMethod.POST})
     @RequiresXsrfCheck
     protected String doExecute() {
         if (!hasAdminPermission()) {
