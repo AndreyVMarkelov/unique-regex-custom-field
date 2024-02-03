@@ -18,10 +18,10 @@
     <!-- Custom Fields -->
     <customfield-type key="unique-regex-cf" name="Unique regex custom field" class="ru.andreymarkelov.atlas.plugins.ur.field.UniqueRegexCF">
         <description>Custom Field that check uniqueness and matching regular expression.</description>
-        <resource type="velocity" name="view" location="/ru/andreymarkelov/atlas/plugins/uniqueregexfield/templates/field/view-uniqueregex.vm"/>
+        <resource type="velocity" name="view" location="templates/plugins/fields/view/view-basictext.vm"/>
         <resource type="velocity" name="column-view" location="/ru/andreymarkelov/atlas/plugins/uniqueregexfield/templates/field/column-view-uniqueregex.vm"/>
         <resource type="velocity" name="xml" location="/ru/andreymarkelov/atlas/plugins/uniqueregexfield/templates/field/xml-uniqueregex.vm"/>
-        <resource type="velocity" name="edit" location="/ru/andreymarkelov/atlas/plugins/uniqueregexfield/templates/field/edit-uniqueregex.vm"/>
+        <resource type="velocity" name="edit" location="templates/plugins/fields/edit/edit-basictext.vm"/>
         <resource type="download" name="customfieldpreview.png" location="/ru/andreymarkelov/atlas/plugins/uniqueregexfield/images/regexField.png"/>
     </customfield-type>
 
@@ -57,7 +57,7 @@
     </web-item>
 
     <!-- WebWork1 -->
-    <webwork1 key="unique_regex_action" name="Unique regex fields configure action" class="java.lang.Object">
+    <webwork1 key="unique_regex_action" name="Unique regex fields configure action" class="java.lang.Object" roles-required="admin">
         <actions>
             <action name="ru.andreymarkelov.atlas.plugins.ur.action.UniqueRegexConfig" alias="UniqueRegexConfig">
                 <view name="input">/ru/andreymarkelov/atlas/plugins/uniqueregexfield/templates/action/uniqueregexconfig.vm</view>

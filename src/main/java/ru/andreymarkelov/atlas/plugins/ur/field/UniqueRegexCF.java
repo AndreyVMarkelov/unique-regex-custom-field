@@ -34,7 +34,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.trim;
 
 public class UniqueRegexCF extends GenericTextCFType implements ProjectImportableCustomField {
-    private static Log log = LogFactory.getLog(UniqueRegexCF.class);
+    private static final Log log = LogFactory.getLog(UniqueRegexCF.class);
 
     private final CustomFieldManager cfMgr;
     private final SearchService searchService;
@@ -49,7 +49,8 @@ public class UniqueRegexCF extends GenericTextCFType implements ProjectImportabl
             UniqueRegexMgr urMgr,
             SearchService searchService,
             CustomFieldManager cfMgr,
-            JiraAuthenticationContext authenticationContext) {
+            JiraAuthenticationContext authenticationContext
+    ) {
         super(customFieldValuePersister, genericConfigManager, textFieldCharacterLengthValidator, jiraAuthenticationContext);
         this.urMgr = urMgr;
         this.searchService = searchService;
@@ -120,7 +121,7 @@ public class UniqueRegexCF extends GenericTextCFType implements ProjectImportabl
                 }
             }
 
-            if (cfData.getJql() != null && cfData.getJql().length() > 0) {
+            if (cfData.getJql() != null && !cfData.getJql().isEmpty()) {
                 ApplicationUser user = authenticationContext.getLoggedInUser();
                 SearchService.ParseResult parseResult = searchService.parseQuery(user, cfData.getJql());
                 if (parseResult.isValid()) {
